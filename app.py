@@ -113,14 +113,14 @@ with st.sidebar:
 
     # Quick presets (with unique keys)
     colA, colB, colC, colD = st.columns(4)
-    if colA.button("All", key="prof_all"):
-        st.session_state.persona_selected = set(core_personas)
-    if colB.button("Industry", key="prof_industry"):
-        st.session_state.persona_selected = {"industry_exec", "industry_lead"}
-    if colC.button("Academia", key="prof_academia"):
-        st.session_state.persona_selected = {"academic_leadership", "academic_staff"}
-    if colD.button("Execs only", key="prof_execs"):
-        st.session_state.persona_selected = {"industry_exec"}
+    # if colA.button("All", key="prof_all"):
+    #     st.session_state.persona_selected = set(core_personas)
+    # if colB.button("Industry", key="prof_industry"):
+    #     st.session_state.persona_selected = {"industry_exec", "industry_lead"}
+    # if colC.button("Academia", key="prof_academia"):
+    #     st.session_state.persona_selected = {"academic_leadership", "academic_staff"}
+    # if colD.button("Execs only", key="prof_execs"):
+    #     st.session_state.persona_selected = {"industry_exec"}
 
     # Checkboxes with counts
     selected_codes = []
@@ -142,14 +142,14 @@ with st.sidebar:
         st.session_state.theme_selected = set(SUPER_THEME_ORDER)
 
     tA, tB, tC, tD = st.columns(4)
-    if tA.button("All", key="theme_all"):
-        st.session_state.theme_selected = set(SUPER_THEME_ORDER)
-    if tB.button("Suggestions", key="theme_suggestions"):
-        st.session_state.theme_selected = {"suggestions_ideas"}
-    if tC.button("Positive/Support", key="theme_pos_support"):
-        st.session_state.theme_selected = {"support_enthusiasm", "positive_feedback"}
-    if tD.button("Critical", key="theme_critical"):
-        st.session_state.theme_selected = {"negative_feedback"}
+    # if tA.button("All", key="theme_all"):
+    #     st.session_state.theme_selected = set(SUPER_THEME_ORDER)
+    # if tB.button("Suggestions", key="theme_suggestions"):
+    #     st.session_state.theme_selected = {"suggestions_ideas"}
+    # if tC.button("Positive/Support", key="theme_pos_support"):
+    #     st.session_state.theme_selected = {"support_enthusiasm", "positive_feedback"}
+    # if tD.button("Critical", key="theme_critical"):
+    #     st.session_state.theme_selected = {"negative_feedback"}
 
     selected_theme_codes = []
     for code in SUPER_THEME_ORDER:
