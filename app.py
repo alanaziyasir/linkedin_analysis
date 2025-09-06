@@ -20,7 +20,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-ART = Path("insights_artifacts")
+ART = Path("./")
 LABELED = ART / "comments_labeled.parquet"
 
 # ---------- Load ----------
