@@ -226,10 +226,10 @@ with tab1:
 
     col1, col2 = st.columns(2, gap="large")
     with col1:
-        st.subheader("Share of Comments by Theme")
+        st.subheader("Comments by Theme")
         st.plotly_chart(fig1, use_container_width=True)
     with col2:
-        st.subheader("Share of Comments by Profession")
+        st.subheader("Comments by Profession")
         st.plotly_chart(fig2, use_container_width=True)
 
     st.subheader("Theme stats")
