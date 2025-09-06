@@ -1,0 +1,594 @@
+{
+  "theme_map": {
+    "0": "ai / training / humain",
+    "1": "awesome / right / almubark",
+    "2": "ai / tareq / amin",
+    "3": "ai / training / skills",
+    "4": "ai / tareq / tareq amin",
+    "5": "ai / academy / real",
+    "6": "ai / saudi / real",
+    "7": "ai / real / training",
+    "8": "ai / saudi / humain",
+    "9": "tareq / amin / tareq amin",
+    "10": "academy / initiative / humain",
+    "11": "great / initiative / great initiative"
+  },
+  "summaries": {
+    "7": {
+      "label": "ai / real / training",
+      "overview": "HUMAIN Academy aims to revolutionize AI training by focusing on practical, domain-specific skills that address real-world challenges across various industries.",
+      "bullets": [
+        "Training should prioritize real-world applications and customer problem-solving over theoretical knowledge.",
+        "A structured approach with foundational, generalist, and specialist levels will cater to diverse learner needs and industry demands.",
+        "Collaboration with academia and industry is essential to create a curriculum that bridges the gap between AI skills and market requirements."
+      ],
+      "quotes": [
+        {
+          "id": "7369234100475301888",
+          "text": "1. Work back form the customer problem... not tech out. The goal is not to do AI.. its to solve problems and make the world better 2. The training should focus on the world \"in front of the model.. not behind the model\". 3. I'd go with three levels. Foundation (for all), Generalist (Reaching for AI in a practical way), and Specialist (as part of a AI project with budget) 4. Give them a tool kit with support to take away to stay connected to Humain 5. Pick the best candidates ambassadors program 6 Student outreach can lean towards the world behind the model and PHD research / talent scouting. For general students provide access to learn / grow / up-skill",
+          "author": "Gavin Payne",
+          "author_title": "Chief Digital Officer | AI, Design, Innovation, Creativity",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369234100475301888%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369234100475301888%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 5,
+          "sentiment": 0.22499999999999998
+        },
+        {
+          "id": "7369245119700426753",
+          "text": "Great initiative. That said, the challenge is bigger than an academy alone. While plenty of AI courses exist, what’s missing is a true AI-focused college model—one that builds both foundational skills and sector-specific expertise. AI in healthcare looks very different from AI in finance or energy. To really close the gap, we need talent that marries AI know-how with domain expertise, delivered through hands-on, practical learning, career placement, and advancement opportunities. This way, HUMAIN Academy can deliver impact across the full value chain of talent development—and set a new benchmark for Saudi and the region.",
+          "author": "Shoaib Yousuf",
+          "author_title": "Managing Director and Partner at BCG | TMT | Digital BCG | Public Sector",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369245119700426753%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369245119700426753%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 3,
+          "sentiment": 0.20454545454545453
+        },
+        {
+          "id": "7369233598438141952",
+          "text": "I really like the direction you’re taking with Academy. Too often, people jump straight into the AI/LLM space without building the fundamentals statistics, classical ML, and understanding how data really flows. That base makes all the difference when going deeper into AI. A balanced path that combines foundations with real-world practice not only makes LLMs more effective, but also unlocks the many powerful use cases that traditional models still hold. Excited to see how Academy shapes this journey.",
+          "author": "Pranav Padmanabhan",
+          "author_title": "Data Scientist | Specializing in LLM Fine-Tuning",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369233598438141952%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369233598438141952%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 3,
+          "sentiment": 0.1729166666666667
+        }
+      ],
+      "stats": {
+        "comments": 69,
+        "avg_sent": 0.2455261504030685,
+        "ideas": 13,
+        "likes": 0,
+        "replies": 13
+      }
+    },
+    "4": {
+      "label": "ai / tareq / tareq amin",
+      "overview": "Tareq Amin emphasizes the need for practical AI education that bridges theory and real-world application, focusing on interdisciplinary collaboration and ethical considerations in AI development.",
+      "bullets": [
+        "AI training should prioritize real-world problems and outcomes, fostering skills that support human-AI collaboration.",
+        "Interdisciplinary approaches, integrating social sciences and humanities, are essential for responsible AI development.",
+        "Public trust and awareness in AI are crucial, necessitating tailored training programs for diverse professional sectors."
+      ],
+      "quotes": [
+        {
+          "id": "7369237264830263297",
+          "text": "Tareq Amin Just completed Stanford’s Post Grad Certificate in AI and ML - the theory is world-class but what’s missing is the 0-to-1 journey. How to choose between GPT-5, Claude, Gemini or now HUMAIN for YOUR specific use case. How to handle edge cases when your users aren’t typical (at Futuroos, we’re building AI-powered behavioral assessment for 5-9 year olds that predicts career aptitudes through gameplay and learn from it as well - try explaining that to traditional ML approaches). How to optimize costs without sacrificing quality when you need real-time inference. My ideal AI learning path: Start with a real problem, ship something in week 1, iterate with actual user feedback, THEN understand why it works. Theory should support building, not precede it. Would love to see Hunain Academy focus on ‘AI in production’ - dealing with rate limits, handling hallucinations, building guardrails for sensitive use cases (essential when your AI assesses children’s potential). The messy stuff that actually determines if your product succeeds. Saudi needs builders who can ship, not just prototype. This is exactly the right vision 🚀",
+          "author": "Ahmed Ashraf",
+          "author_title": "GRC & Enterprise Risk Services - Business Resilience at MNP | CBCP | McGill MBA | CSM® | CSPO® | Military Veteran | ACSA® | Trained Leader and An Avid Problem Solver",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369237264830263297%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369237264830263297%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 3,
+          "sentiment": 0.1480654761904762
+        },
+        {
+          "id": "7369249919980687361",
+          "text": "Tareq Amin This is truly an inspiring initiative. In my view, the success of AI in any organization or society depends on public trust and awareness. Except for a small group of experts, most people still perceive AI as a mystery rather than a tool designed to augment human productivity and improve quality of life. HUMAIN is all about enhancing public living via AI. 1# What needed to be Focused as asked? There is a strong need to prioritize AI awareness and digital dexterity. Not everyone in enterprises or corporations is digitally fluent, so training should ensure professionals can confidently adopt AI as a partner aligned with organizational goals—not as a replacement for human talent. (1)",
+          "author": "Muhammad Irfan Raza (MBA)",
+          "author_title": "Freelance Tech Analyst – AI, IoT, and Emerging Technologies",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369249919980687361%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369249919980687361%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 1,
+          "sentiment": 0.16527777777777777
+        },
+        {
+          "id": "7369285386935656452",
+          "text": "Tareq Amin - exciting initiative! HUMAIN Academy has the potential to set a new benchmark for AI learning in the region. At 6G Academy we share the same belief: fluency in AI is becoming what English or software programming once was - essential for every professional. Two aspects I’d emphasize: -> Methodology – teaching people how to learn AI, while also letting AI itself adapt to the learner’s pace, language, and style. This personalized learning journey will be the real unlock, though tuning it to the last mile will be challenging. -> Domain context – applied AI isn’t one-size-fits-all. We’re laser-focused on connectivity and adjacent domains (mobile, #quantum, #privateAI, #swarmintelligence for distributed #physicalAI). Personally, I see physical AI (#robots, #distributeddevices, #embodiedsystems) as a low-hanging fruit to move AI out of the PC and into daily imagination and interaction. Even at home, I explore this with my kids (11, 8, and 6), it sparks curiosity and makes AI tangible. Would love to explore collaboration. HUMAIN Academy × 6G Academy could really accelerate the Vision 2030 goals for practical AI talent.",
+          "author": "Piotr (Peter) Pietrzyk",
+          "author_title": "Founder & Chair, 6GWorld Summit Series | Connecting Policymakers, Innovators & Investors across Next-Gen Networks",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369285386935656452%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369285386935656452%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 1,
+          "sentiment": 0.1538352272727273
+        }
+      ],
+      "stats": {
+        "comments": 59,
+        "avg_sent": 0.2117998615929023,
+        "ideas": 27,
+        "likes": 0,
+        "replies": 8
+      }
+    },
+    "6": {
+      "label": "ai / saudi / real",
+      "overview": "The integration of AI training in Saudi Arabia's healthcare and business sectors is crucial for developing hands-on skills and fostering a responsible AI ecosystem.",
+      "bullets": [
+        "There is a significant gap in practical AI training for Saudi dentists and other professionals, necessitating hands-on experience to improve public health outcomes.",
+        "Establishing a collaborative AI community through initiatives like AINA can accelerate the growth and ethical use of AI across various sectors in Saudi Arabia.",
+        "A comprehensive AI academy should offer diverse training paths, focusing on both technical and business aspects to bridge the gap between technology and demand in the market."
+      ],
+      "quotes": [
+        {
+          "id": "7369236010104209409",
+          "text": "As the CEO of eDentsit.AI, I see a massive opportunity to integrate AI in Dentistry as a core vertical within the potential Humain Academy. Healthcare AI, specifically dental AI, is transforming patient outcomes globally; however, most Saudi dentists lack hands-on experience with these tools. Fresh graduates need practical training on AI-powered diagnostics, treatment planning, and practice management systems. What I'd contribute: * Real-world case studies from our platform showing practical AI implementation in dental practice. The gap we can fill: Moving beyond theoretical AI concepts to hands-on dental AI training that impacts public health outcomes. Would love to discuss how we can build this vertical together. The next generation of Saudi dentists deserves to lead the global AI revolution in healthcare.",
+          "author": "Khaled Banisaidan MSc, MBA",
+          "author_title": "Founder & CEO of the eDentist.AI platform, our mission is to revolutionize Oral Healthcare with AI and Teledentistry",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369236010104209409%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369236010104209409%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 2,
+          "sentiment": 0.13
+        },
+        {
+          "id": "7369277306504155136",
+          "text": "Tareq Amin This is exactly what the region needs At E&E Business Solutions, we’ve seen firsthand through our AI platforms (MVSxAI & TawjihAI) that organizations need hands-on talent ready to deploy AI, not just certifications. We’d be keen to contribute our experience and work together with HUMAIN Academy to accelerate AI adoption in Saudi and beyond.",
+          "author": "Ali Al Marjibi",
+          "author_title": "Entrepreneur | Ai | FinTech | Renewable Energy | Hydrogen | Supply Chain | International Supply Chain",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369277306504155136%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369277306504155136%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 1,
+          "sentiment": 0.225
+        },
+        {
+          "id": "7369256522381475846",
+          "text": "Tareq Amin Sharona Boonman Saudi Arabia’s first non-profit association dedicated to artificial intelligence. We are committed to building an inclusive knowledge-based community! Our mission to To accelerate the growth and adoption of artificial intelligence in Saudi Arabia by cultivating a robust and collaborative ecosystem. AINA empowers members through education, innovation, research, and ethical AI practices. By prioritising skill development and fostering a forward-thinking community, AINA ensures that AI drives both economic growth and societal progress within the Kingdom of Saudi Arabia. Our Vision To become the leading non-profit AI Hub Saudi Arabia dedicated to advancing AI knowledge, innovation, and collaboration. AINA strives to create a thriving community where AI enthusiasts can connect and grow, while promoting ethical practices and ensuring AI’s positive impact on society. We would love to connect with you for collaboration Here is the point of contact Abdulrhman Alahdal, PMP®",
+          "author": "Abdulrhman Alahdal, PMP®",
+          "author_title": "Digital Transformation | Project Management | Business Development Analyst | Global Consulting",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369256522381475846%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369256522381475846%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 1,
+          "sentiment": 0.028409090909090884
+        }
+      ],
+      "stats": {
+        "comments": 54,
+        "avg_sent": 0.1959393590208685,
+        "ideas": 14,
+        "likes": 0,
+        "replies": 4
+      }
+    },
+    "0": {
+      "label": "ai / training / humain",
+      "overview": "The theme emphasizes the importance of practical, hands-on AI training that empowers individuals across various sectors to solve real-world problems while fostering critical evaluation of AI tools.",
+      "bullets": [
+        "Code-free applications and gamified learning can enable professionals, like doctors and teachers, to create and test AI solutions in their fields.",
+        "Personal stories, such as a father's quest to help his daughter with Rett Syndrome, highlight the transformative potential of AI in addressing human challenges.",
+        "Engaging formats like short-term projects and challenge platforms can enhance AI education, making it accessible and relevant to diverse audiences."
+      ],
+      "quotes": [
+        {
+          "id": "7369233781758582790",
+          "text": "This is a great initiative. Actually I have been getting a lot of questions about the too. In terms of content I am happy to hear from everyone else. But in terms of format I think it is key that we can target to various audiences, e.g., some short term full time projects that students can do as part of their curriculum (e.g., instead of an internship), as well as part time courses that people can do in paralel to their education and work. Abdulaziz AlDakheel I am curious to hear what you think considering that you have so many AI learners in your close network",
+          "author": "Sharona Boonman",
+          "author_title": "HUMAIN | Strategy & Investment Advisor | Building KSA’s end-to-end AI company",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369233781758582790%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369233781758582790%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 2,
+          "sentiment": 0.2611111111111111
+        },
+        {
+          "id": "7369235660500680704",
+          "text": "Code-free practical applications for each domain. Maybe a gamified approach? For example, for a medical doctor to build an app that can be tested in their own clinic with real data from their own patients - anyhow the doctor is currently liable so why not be empowered by knowledge and tools to build the app and test... on the run while doing so the doctor will learn the metrics, the ethics, the stats, and most importantly the ability to critically evaluate the AI tools. This could extend to teachers too, or any domain. Just an idea... learning by doing, top-down approach without dwelling on the theory.",
+          "author": "Ahmad N.",
+          "author_title": "Medical and Science Writer | Researcher",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369235660500680704%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369235660500680704%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 3,
+          "sentiment": 0.27499999999999997
+        },
+        {
+          "id": "7369355223141629952",
+          "text": "I’ve been building AI apps/agents over the past few months, and here’s my take: - Prompt Engineering: Foundational for LLMs and AI agents. - AI Agent Frameworks: Hands-on with tools like LangGraph. - Fine-Tuning over Training: Training LLMs from scratch is compute-heavy; fine-tuning is more practical and adaptable. - Cloud AI Integrations: Most real-world AI runs on AWS, Azure, and GCP. - Workshops & Learning by Doing: Whether instructor-led or self-paced. - Path for AI Researchers: Programs focused on AI R&D to drive breakthrough innovation.",
+          "author": "Abdallah Almasri",
+          "author_title": "Cloud | AI | Building & Optimizing High-Performance Platforms | AWS | Azure Certified",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369355223141629952%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369355223141629952%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 1,
+          "sentiment": 0.1375
+        }
+      ],
+      "stats": {
+        "comments": 48,
+        "avg_sent": 0.1958665868718369,
+        "ideas": 11,
+        "likes": 0,
+        "replies": 11
+      }
+    },
+    "8": {
+      "label": "ai / saudi / humain",
+      "overview": "The initiative aims to enhance AI education in Saudi Arabia through the Humain platform, fostering local talent and aligning with national goals for technological advancement.",
+      "bullets": [
+        "Humain Academy will provide diverse learning paths and hands-on labs to equip students and professionals with practical AI skills.",
+        "Strategic partnerships with local universities and companies will enhance the curriculum and ensure relevance to Saudi's Vision 2030.",
+        "The program emphasizes community engagement and real-world applications, preparing graduates to tackle challenges in various sectors like healthcare and finance."
+      ],
+      "quotes": [
+        {
+          "id": "7369229855193747456",
+          "text": "This is great. I will commit to training and empowering AI education to Saudi with our Ai social platform utilizing Humain, particularly thru our education side we call STREAM to help push Saudi excellence. Every part of the world should be doing this and this is great leadership.",
+          "author": "Adel Belgaied",
+          "author_title": "CEO of PIVIT | All-In-One - AI Social Media AuthentIQ Intelligence | Your Brain - Your Algorithm",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369229855193747456%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369229855193747456%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 3,
+          "sentiment": 0.45
+        },
+        {
+          "id": "7369284158818299905",
+          "text": "Great Idea Tareq Amin! Let’s have a Made-In-Saudi platform power the HUMAIN AI Academy, a move that would directly complement Humain's mission of establishing AI and IT sovereignty. Our Human Capability Development (HCD) platform enables Saudi organizations to launch and scale ambitious HCD programs and custom academies with unprecedented speed and efficiency. The platform supports digital and immersive learnings and offers adaptive learning pathways, along side skills and competency matrix that provides robust tools to map, track, and measure skill acquisition and proficiency. Dolf Technologies expertise is demonstrated through seven successful national academy deployments for entities including MonshaatSA' Academy, Technical and Vocational Teachers' College (TVTC), Ministry of Sports, and others - which collectively train and upskill hundreds of thousands of Saudi citizens. With 15+ years of expertise powering local learning and development through technology, Dolf Technologies has been a partner of choice for learning technology services of Saudi organizations and institutions and duly recognized as a national edtech champion by Frost & Sullivan and Monsha'at.",
+          "author": "Mohammad Fakhruddin",
+          "author_title": "COO & XR Strategist. Moving XR & Spatial Computing from theory to practice. Saudi Arabia Specialist. #XR #AR #VR #MR #AI #DigitalTwin #SpatialComputing #EmergingTechnologies #Industry4.0 #SaudiArabia",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369284158818299905%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369284158818299905%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 1,
+          "sentiment": 0.2818181818181818
+        },
+        {
+          "id": "7369268171788275714",
+          "text": "Congratulations Tareq Amin on this visionary initiative! Establishing HUMAIN Academy is a huge step toward bringing the Middle East up to speed with the latest AI texh especially Agentic AI and practical, hands-on training. Bridging the gap between theory and real-world application is exactly what the region needs ASAP to empower talent, accelerate innovation, and ensure we’re not just users but also creators and leaders. Your focus on building, deploying, and scaling AI will truly prepare the next generation of Saudi professionals and entrepreneurs to thrive in the AI-driven economy. Excited to see how HUMAIN Academy will shape the future of learning and contribute to Vision 2030. 🚀",
+          "author": "Modi Elnadi",
+          "author_title": "Agentic AI Performance Marking | PPC Paid Media | SEO | Media Planning & Digital Strategy | Ecommerce",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369268171788275714%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369268171788275714%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.19062500000000002
+        }
+      ],
+      "stats": {
+        "comments": 45,
+        "avg_sent": 0.2235348324968423,
+        "ideas": 12,
+        "likes": 0,
+        "replies": 7
+      }
+    },
+    "2": {
+      "label": "ai / tareq / amin",
+      "overview": "Tareq Amin's initiative aims to establish a Pro-Social AI hub that integrates local needs with global practices, focusing on ethical, hands-on AI education and innovation tailored for the Arabic-speaking community.",
+      "bullets": [
+        "Emphasizes practical AI education with a focus on real-world applications and measurable social impact.",
+        "Encourages collaboration between industry and academia to develop curricula that address market needs and foster innovation.",
+        "Promotes an Arabic-first approach to AI, integrating local dialects and ensuring graduates have hands-on experience with deployable skills."
+      ],
+      "quotes": [
+        {
+          "id": "7369238913195913216",
+          "text": "What a brilliant idea Tareq Amin as I was thinking about the value of this initiative since lunching of Humain. I think it can be distinguished by becoming a Pro-Social AI hub that blends local priorities with global best practices, combining hands-on skills, ethics and governance, and Arabic-focused innovation. It should focus on AI professionals who are technically competent and also human-oriented builders and globally aware leaders and able to create measurable social and economic impact. Some practical applications I suggest to emphasize: 1. Pro-Social AI projects tackling real social challenges. 2. Replacing certificates with impact-based outcomes. 3. Creating an AI-to-startup accelerator pipeline.",
+          "author": "Prof. Ahmed Al Khateeb",
+          "author_title": "Sr. Advisor | Agile Leadership | Governance | Public Policy | EdTech | Inspiring Innovation with Upholding Ethics, Human-Centered Values, and Social Impact | Digital Wellbeing",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369238913195913216%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369238913195913216%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 2,
+          "sentiment": 0.353030303030303
+        },
+        {
+          "id": "7369308041617297409",
+          "text": "🔥I’d be grateful to those who engage with my comment so Mr.Tarek can notice it ;sometimes a small push helps ideas find the right eyes.🔥 An inspiring initiative, Tarek.💫 While many are rushing to ‘teach AI ’ few are bold enough to reimagine how human potential and intelligence evolve alongside it. Your vision with HUMAIN Academy resonates strongly. I happen to be working on a platform called FALACK; its essence is not just about technology, but about orbiting ideas, people, and skills in a way that redefines how they connect and grow. Perhaps there’s room for our paths to intersect. Collaboration sometimes creates constellations greater than the sum of their stars.✨",
+          "author": "Mohammad K. Tubaishat",
+          "author_title": "Cyber security operations advisory | Aligning processes with cybersecurity best practices| Entrepreneur of FALACK MKMAFT",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369308041617297409%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369308041617297409%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 1,
+          "sentiment": 0.1911255411255411
+        },
+        {
+          "id": "7369420525296586755",
+          "text": "That’s a great idea Tareq Amin, and its impact will depend on execution. From my experience across entertainment, media, and marketplaces, working with both fresh graduates and seasoned professionals, I can offer few thoughts. - The traditional path of long academic study followed by years of hands-on work isn’t scalable for AI. It leaves many professionals unprepared for complex challenges and limits cross-industry innovation, whether in drug discovery, gaming, or personalized commerce. - Universities and online platforms already cover AI fundamentals. What’s urgently needed is applied AI education, how to use emerging models and tools in real-world contexts to drive second-order innovation. - This calls for modern curricula and teaching methods that produce immediately deployable skills, supported by local and international partnerships between industry and academia. Experts, students, and researchers should collaborate to build courses that address real use cases. - Finally, we need learning tracks tailored to different levels of AI literacy. Some theory is important, but the emphasis must be on practical, applied skills that empower more people to put AI to work.",
+          "author": "Sultan Mahmood",
+          "author_title": "Senior Technology Leader • Head of Digital Engineering @ Qiddiya & SEVEN • Ex Grubhub, Shutterstock & HBO • Enterprise & Consumer Technology • AI/ML Innovation • Architecture & Delivery • Digital Transformation",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369420525296586755%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369420525296586755%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 1,
+          "sentiment": 0.15294117647058825
+        }
+      ],
+      "stats": {
+        "comments": 37,
+        "avg_sent": 0.3249308390618551,
+        "ideas": 6,
+        "likes": 0,
+        "replies": 5
+      }
+    },
+    "3": {
+      "label": "ai / training / skills",
+      "overview": "Effective AI training should prioritize strategic thinking and foundational skills over immediate tool usage to maximize enterprise value and ensure responsible adoption.",
+      "bullets": [
+        "Focus on building a strategic roadmap to avoid pitfalls and ensure coherent AI adoption.",
+        "Empower non-specialist professionals with practical skills to enhance their job performance using AI.",
+        "Integrate foundational business skills and human-centered challenges into AI training to foster creativity and effective tool usage."
+      ],
+      "quotes": [
+        {
+          "id": "7369279470387548160",
+          "text": "It is very important to not jump right into development and implementation training. Foundationally, a key aspect of the training should be that the student/ professional adopts a strategic lens. This will ensure one isn’t trigger happy with AI tools and understands how to build a well-sequenced digital roadmap that unlocks maximum value for any enterprise. Basically, a. how to recognise transformation pitfalls, avoid fragmented adoption, and build a sequenced roadmap, and b. how to evaluate investment choices with a clear lens on ROI, compliance, and risk. I have covered some of this in the following paper (written for CMOs): http://bit.ly/47sshZA",
+          "author": "Satyam Chauhan",
+          "author_title": "Global Marketing & Brand Leader | Ex-Shell (Fortune 10) | $25M+ Transformation Savings | Cannes Award-Winning Campaign | Employer Brand & Masterbrand Leadership | India & Middle East",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369279470387548160%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369279470387548160%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 1,
+          "sentiment": 0.22571428571428573
+        },
+        {
+          "id": "7369276181696708608",
+          "text": "Fantastic initiative. The focus on practical skills is exactly what's needed in the region. My thoughts on your questions: Focus Areas: Consider specialized tracks for key Vision 2030 sectors (Energy, Smart Cities) and practical workshops on Applied Generative AI for business. What's Missing: The biggest gap in AI training today is often the \"last mile\" of deployment (MLOps) and dedicated strategy training for non-technical leaders. Ideal Path: A project-based model with three tiers would be powerful: 1) The Practitioner (build a real project), 2) The Architect (deploy it at scale), and 3) The Strategist (a track for managers). A great vision. Excited to see this develop!",
+          "author": "Ali Afzal Yousuf",
+          "author_title": "Helping businesses unlock growth and efficiency with AI-powered automation | Founder @ Astrameld",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369276181696708608%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369276181696708608%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.3030032467532468
+        },
+        {
+          "id": "7369279995803856897",
+          "text": "1. Practical Skills Development**: Prioritize hands-on training with real AI tools to ensure immediate applicability. 2. Integration of Theory and Practice**: Design programs that seamlessly connect academic concepts with industry needs. 3. Collaborative Learning Environments**: Foster partnerships between students, professionals, and businesses to enhance learning. 4. Customized Learning Journeys**: Tailor educational paths to align with individual career objectives and market demands. 5. Strategic Industry Partnerships**: Collaborate with leading companies to ensure curriculum relevance and facilitate job placements. 6. Dynamic Curriculum Updates**: Regularly refresh content to keep pace with emerging technologies and trends. 7. Community Engagement**: Build a robust network for ongoing support and collaboration among learners and industry leaders. 8. Ethical Considerations**: Incorporate discussions on the ethical implications of AI and its impact on society. 9. Continuous Improvement**: Establish a feedback mechanism to iteratively refine programs based on stakeholder input.",
+          "author": "Mohammed A.",
+          "author_title": "Expert ,Enterprise Architecture | IT Planning & Management |TOGAF® | Prosci® | BPM",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369279995803856897%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369279995803856897%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.10555555555555556
+        }
+      ],
+      "stats": {
+        "comments": 32,
+        "avg_sent": 0.1877910992364117,
+        "ideas": 13,
+        "likes": 0,
+        "replies": 1
+      }
+    },
+    "5": {
+      "label": "ai / academy / real",
+      "overview": "Humain Academy aims to revolutionize AI education through a crowd-training model, strategic industry partnerships, and a focus on practical, real-world applications to prepare talent for the evolving AI landscape.",
+      "bullets": [
+        "Implement a crowd-training approach where anyone can be an instructor or learner, adapting to rapid AI innovations.",
+        "Establish a Strategic Advisory Board to ensure curriculum relevance and continuous improvement based on learner feedback.",
+        "Focus on hands-on training with real tools and industry-specific applications to bridge the gap between theory and practical implementation."
+      ],
+      "quotes": [
+        {
+          "id": "7369234644535394304",
+          "text": "The cornerstone of building such Academy will be revolutionizing the way it’s delivered. This has to be more of “crowd-training” approach where anyways can be an instructor / learner as the fast pace of innovations and tools cannot be tracked in a curriculum with standard teaching approach . My 2 Cehts",
+          "author": "Tareq Kayyali",
+          "author_title": "Passionate Entrepreneur | Disruptive Leader | Family Person | Sports Enthusiast | Dreaming Big",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369234644535394304%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369234644535394304%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 2,
+          "sentiment": 0.175
+        },
+        {
+          "id": "7369774938670432257",
+          "text": "In my opinion, HUMAIN Academy would greatly benefit from establishing a Strategic Advisory Board that includes experts from academia, the tech industry, and the startup ecosystem. This board could guide the academy's direction, ensuring that programs stay relevant to real-world needs and global trends. Having an external layer of insight would help maintain high standards and ensure the academy evolves with the rapidly changing AI landscape. I also believe that a strong feedback and iteration system is essential. Learners should be encouraged to share their experiences after each course, especially around the practical value and clarity of instruction. Regularly analyzing this feedback would allow for continuous refinement of content and teaching methods. Finally, the development of a data-driven learning platform should be a top priority. Tracking outcomes like learner progress, job placements, and startup successes would provide valuable insights into what’s working and what needs adjustment. This kind of transparency would not only improve the learner experience but also position HUMAIN Academy as a forward-thinking, results-driven institution that’s genuinely preparing talent for the future of AI.",
+          "author": "Shahnawaz Gaur",
+          "author_title": "Chief Technology, AI Innovation & Strategy Leader | Digital Platforms| SmartSolutions| Sr Chief Engineer/ Director Engineering & R&D @Samsung|TopVoice(Java,GenAI,AgenticAI, BigData,MultiCloud, DataScience,VR/XR,Robotics)",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369774938670432257%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369774938670432257%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 1,
+          "sentiment": 0.21955555555555556
+        },
+        {
+          "id": "7369352043184037888",
+          "text": "Brilliant initiative, Tareq 👏. HUMAIN Academy can stand out by focusing on real-world problem solving, not just tech—training “in front of the model,” with hands-on projects and practical impact. A tiered learning path (Foundation, Generalist, Specialist), toolkits with ongoing mentorship, and an ambassador program will empower students, professionals, and entrepreneurs to build, deploy, and scale AI that truly benefits society.",
+          "author": "Shah Sadiq",
+          "author_title": "Sr. Systems Engineer\\Solutions Architect at Technomatech IT Services",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369352043184037888%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369352043184037888%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.9
+        }
+      ],
+      "stats": {
+        "comments": 31,
+        "avg_sent": 0.2377700006584415,
+        "ideas": 12,
+        "likes": 0,
+        "replies": 3
+      }
+    },
+    "10": {
+      "label": "academy / initiative / humain",
+      "overview": "The initiative aims to bridge the gap between academia and industry by fostering skill development and collaboration to enhance human experience and innovation.",
+      "bullets": [
+        "Dr. Aseel Addawood's expertise is pivotal for the initiative's success, combining academic knowledge with market experience.",
+        "The program focuses on empowering educators and students through free training, targeting 100,000 participants to enhance practical skills.",
+        "Collaboration with organizations like MenaML and support from major tech companies will strengthen the AI community and drive regional innovation."
+      ],
+      "quotes": [
+        {
+          "id": "7369260606245273600",
+          "text": "Dr Aseel Addawood would be a great contributor for such an important initiative given that her academic background along with practical experience in the market",
+          "author": "Mohammad Faisal",
+          "author_title": "AI & Cloud Solutions Lead",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369260606245273600%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369260606245273600%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 4,
+          "sentiment": 0.30000000000000004
+        },
+        {
+          "id": "7369249247822536710",
+          "text": "We would love the opportunity to work alongside you we understand that education and real clear direction to empower all is paramount for the nation and the region to move forward and innovate its about hand on skill development from a early age and its about awareness and practical application and AI wisdom its about upskilling and empowering those in work now and ensure they have the skills Thats why we are launching next week our free training to education sector to help train 100,000 teachers and 100,000 students under our free programme. We would love to be around the table with you. @Sage lal we will like to join forces.",
+          "author": "SETCA - Saudi Education & Technology Collective Alliance",
+          "author_title": "2,276 followers",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369249247822536710%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369249247822536710%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.2928571428571428
+        },
+        {
+          "id": "7369282000437858309",
+          "text": "Hello Tareq Amin. Great initiative! I love it! We will be more than glad to participate with our programs of 1million mind and Snowflake Academy! the team with reach out on the email provided.",
+          "author": "Ali Al-Ismail علي آل اسماعيل",
+          "author_title": "Country Manager, Snowflake ❄️",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369282000437858309%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369282000437858309%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.6875
+        }
+      ],
+      "stats": {
+        "comments": 29,
+        "avg_sent": 0.2579120630327526,
+        "ideas": 4,
+        "likes": 0,
+        "replies": 5
+      }
+    },
+    "1": {
+      "label": "awesome / right / almubark",
+      "overview": "The theme highlights enthusiasm and support for a successful initiative or achievement.",
+      "bullets": [
+        "Strong endorsements from peers indicate widespread approval.",
+        "Encouragement to share knowledge and collaborate for future success.",
+        "Expressions of excitement and positivity about the accomplishment."
+      ],
+      "quotes": [
+        {
+          "id": "7369292533572603906",
+          "text": "Awesome 👏🏻",
+          "author": "Abdelrauof Alotti",
+          "author_title": "Data Analytics | Data Science | Data Management | Data Governance | Strategy & Policy | Machine Learning | Big Data | Data Visualization | Python | SQL | Power BI",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369292533572603906%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369292533572603906%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 1.0
+        },
+        {
+          "id": "7369260779600060416",
+          "text": "👏🏻👏🏻",
+          "author": "Mustafa Al-Hunaiti",
+          "author_title": "Data & AI Engineer | 10 x Microsoft Certified | CDMP Certified | Bachelor’s in Data Science",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369260779600060416%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369260779600060416%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.0
+        },
+        {
+          "id": "7369456901274746882",
+          "text": "Interesting",
+          "author": "Rajiv Sharma",
+          "author_title": "Technology Leader | Entrepreneur | Program Manager | Digital Transformation Specialist",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369456901274746882%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369456901274746882%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.5
+        }
+      ],
+      "stats": {
+        "comments": 22,
+        "avg_sent": 0.2563311688311688,
+        "ideas": 0,
+        "likes": 0,
+        "replies": 1
+      }
+    },
+    "9": {
+      "label": "tareq / amin / tareq amin",
+      "overview": "Tareq Amin is fostering a collaborative and innovative environment at HUMAIN, encouraging co-creation and knowledge sharing among team members.",
+      "bullets": [
+        "Tareq Amin emphasizes the importance of building HUMAIN as a collective effort.",
+        "There is strong support for co-creation and knowledge sharing as key to future success.",
+        "Experts like Haidar AlMubarak are eager to contribute, highlighting the value of collaboration."
+      ],
+      "quotes": [
+        {
+          "id": "7369234483813736448",
+          "text": "Tareq Amin Thanks a lot for addressing this point publicly. This really shows your ambition of making HUMAIN a company built by everyone.",
+          "author": "Sharona Boonman",
+          "author_title": "HUMAIN | Strategy & Investment Advisor | Building KSA’s end-to-end AI company",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369234483813736448%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369234483813736448%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 3,
+          "sentiment": 0.13333333333333333
+        },
+        {
+          "id": "7369401537812443138",
+          "text": "Great Initiative Tareq Amin",
+          "author": "Skillement",
+          "author_title": "97 followers",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369401537812443138%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369401537812443138%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.8
+        },
+        {
+          "id": "7369406808043593728",
+          "text": "Awesome Tareq Amin",
+          "author": "David West Smith",
+          "author_title": "Technology and Finance Executive - Strategic Business Development and Partnerships | Quantum Computing, AI/ML",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369406808043593728%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369406808043593728%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 1.0
+        }
+      ],
+      "stats": {
+        "comments": 19,
+        "avg_sent": 0.3337142197599261,
+        "ideas": 1,
+        "likes": 0,
+        "replies": 3
+      }
+    },
+    "11": {
+      "label": "great / initiative / great initiative",
+      "overview": "The theme highlights strong support and enthusiasm for a promising global online community initiative.",
+      "bullets": [
+        "Widely recognized as a brilliant and practical idea.",
+        "Encourages collaboration and community engagement.",
+        "Wishes for success and offers support for its development."
+      ],
+      "quotes": [
+        {
+          "id": "7369348928422498305",
+          "text": "Great initiative.",
+          "author": "Dr. David Soldani",
+          "author_title": "SVP Next Generation Advanced Research @ Rakuten Mobile, Inc. | Adj. Professor @ UNSW",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369348928422498305%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369348928422498305%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.8
+        },
+        {
+          "id": "7369837962739683329",
+          "text": "A great initiative 🤗",
+          "author": "Fatimah Sammar",
+          "author_title": "Data scientist | IT & Digital transformation manager",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369837962739683329%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369837962739683329%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.8
+        },
+        {
+          "id": "7369711060158693378",
+          "text": "A great idea",
+          "author": "Professor Paul Morrissey C.Eng, FIET, FBCS, FRSA",
+          "author_title": "Global Technology Entrepreneur, Ambassador at TM Forum AI, Big Data Analytics, CX, Smart Cities, and Innovation",
+          "comment_url": "https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369711060158693378%29&dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369711060158693378%2Curn%3Ali%3Aactivity%3A7369227868972691457%29",
+          "likes": 0,
+          "replies": 0,
+          "sentiment": 0.8
+        }
+      ],
+      "stats": {
+        "comments": 17,
+        "avg_sent": 0.6213903743315509,
+        "ideas": 0,
+        "likes": 0,
+        "replies": 0
+      }
+    }
+  }
+}
