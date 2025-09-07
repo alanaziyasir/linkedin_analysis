@@ -431,15 +431,22 @@ with tab2:
         # Option 1 (preferred when HTML needs JS): iframe
         components.html(fixed, height=1400, scrolling=True, width=1600)  # width will match the Streamlit column
         #st.html(fixed, width="stretch")
+
 with tab3:
     st.subheader("Q&A")
 
-    # --- Config / paths
+    # ---------- Config / paths ----------
     from pathlib import Path
     DATASET_JSON = Path("dataset.json")
 
-    # --- Helper: load dataset.json and merge persona/super_theme from df (if available)
-    import json, re
+    # ---------- OpenAI key via Streamlit secrets (docs-correct) ----------
+    import os
+    OPENAI_KEY = st.secrets.get("OPENAI_API_KEY", "")
+    # You can pass it directly to the client; no need to export to env.
+
+    # ---------- Load + tidy dataset ----------
+    import json, re, pandas as pd, numpy as np
+
     def _load_dataset_json(path: Path) -> pd.DataFrame:
         if not path.exists():
             st.error(f"Missing {path}. Place dataset.json in the app folder.")
@@ -464,8 +471,8 @@ with tab3:
         present = [k for k in keep if k in d0.columns]
         d0 = d0[present].rename(columns=keep)
 
-        def clean(s):
-            if not isinstance(s,str): return ""
+        def clean(s: str) -> str:
+            if not isinstance(s, str): return ""
             return re.sub(r"\s+"," ", s.replace("\u200b","")).strip()
         d0["text"] = d0["text"].map(clean)
         d0 = d0[d0["text"].str.len()>0].copy()
@@ -479,7 +486,7 @@ with tab3:
 
         d0["replies"] = pd.to_numeric(d0.get("replies"), errors="coerce").fillna(0).astype(int)
 
-        # Bring over LLM labels if present in df (the app's global df has them)
+        # Bring over LLM labels from your main df if present
         dmerge = df[["id","super_theme","persona","sentiment"]].copy()
         dmerge["id"] = dmerge["id"].astype(str)
         d0["id"] = d0["id"].astype(str)
@@ -491,48 +498,44 @@ with tab3:
 
     data_for_index = _load_dataset_json(DATASET_JSON)
 
-    # --- Embedding backend (SentenceTransformers) with TF-IDF fallback
+    # ---------- Embeddings (SentenceTransformers) with TF-IDF fallback ----------
     @st.cache_resource(show_spinner=False)
     def _load_st_model():
         try:
             from sentence_transformers import SentenceTransformer
-            model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
-            return model
-        except Exception as e:
+            return SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+        except Exception:
             return None
 
     st_model = _load_st_model()
 
     @st.cache_resource(show_spinner=False)
-    def _build_embeddings(texts: list[str], have_model: bool):
-        import numpy as np
-        if have_model and st_model is not None:
-            # SentenceTransformers embeddings (normalized for cosine via dot product)
+    def _build_embeddings(texts: list[str], use_st: bool):
+        if use_st and st_model is not None:
             embs = st_model.encode(texts, batch_size=64, show_progress_bar=False, normalize_embeddings=True)
             return "st", np.asarray(embs, dtype="float32"), None
         else:
-            # TF-IDF fallback
+            # TF-IDF fallback (works everywhere, no downloads)
             from sklearn.feature_extraction.text import TfidfVectorizer
             vec = TfidfVectorizer(ngram_range=(1,2), min_df=1, stop_words="english")
             X = vec.fit_transform(texts)
             return "tfidf", X, vec
 
-    method, DOC_EMB, TFIDF_VEC = _build_embeddings(data_for_index["text"].tolist(), have_model=(st_model is not None))
+    method, DOC_EMB, TFIDF_VEC = _build_embeddings(
+        data_for_index["text"].tolist(), use_st=(st_model is not None)
+    )
 
-    # Optional LLM synthesis
-    import os, streamlit as st
+    # ---------- Optional LLM synthesis ----------
+    USE_LLM = bool(OPENAI_KEY)
+    OAICLIENT = None
+    if USE_LLM:
+        try:
+            from openai import OpenAI
+            OAICLIENT = OpenAI(api_key=OPENAI_KEY)
+        except Exception:
+            USE_LLM = False
 
-    # Load key from Streamlit Secrets and export to env so your existing code sees it
-    OPENAI_KEY = st.secrets.get("OPENAI_API_KEY", "")
-    if OPENAI_KEY:
-        os.environ["OPENAI_API_KEY"] = OPENAI_KEY
-
-    USE_LLM = bool(os.getenv("OPENAI_API_KEY"))
-    from openai import OpenAI
-    OAICLIENT = OpenAI()  # will auto-read the env var
-
-    # --- Query helper
-    import numpy as np
+    # ---------- Query helpers ----------
     from sklearn.metrics.pairwise import cosine_similarity
 
     def _mask_indices(persona=None, super_theme=None, start_ts=None, end_ts=None):
@@ -545,8 +548,7 @@ with tab3:
             m &= (data_for_index["created_ts"].fillna(0) >= int(start_ts))
         if end_ts is not None:
             m &= (data_for_index["created_ts"].fillna(0) <= int(end_ts))
-        idx = np.where(m.to_numpy())[0]
-        return idx
+        return np.where(m.to_numpy())[0]
 
     def ask(question, k=10, persona=None, super_theme=None, start_ts=None, end_ts=None):
         idx = _mask_indices(persona, super_theme, start_ts, end_ts)
@@ -556,14 +558,14 @@ with tab3:
         # Compute similarities
         if method == "st":
             q = st_model.encode([question], normalize_embeddings=True)
-            sims = (DOC_EMB[idx] @ q[0]).astype("float32")  # cosine via dot product
+            sims = (DOC_EMB[idx] @ q[0]).astype("float32")     # cosine via dot product
         else:
             q = TFIDF_VEC.transform([question])
             sims = cosine_similarity(q, DOC_EMB[idx]).ravel()
 
         order = sims.argsort()[::-1][:k]
         hit_idx = idx[order]
-        docs = [data_for_index["text"].iat[i] for i in hit_idx]
+        docs  = [data_for_index["text"].iat[i] for i in hit_idx]
         metas = data_for_index.iloc[hit_idx][["author","author_title","comment_url","replies"]].to_dict("records")
         scores = sims[order]
 
@@ -597,7 +599,7 @@ Comments:
             except Exception:
                 ans = "Top matching comments:\n" + "\n".join([f"- {d}" for d in docs[:6]])
         else:
-            ans = "Top matching comments:\n" + "\n".join([f"- {d}" for d in docs[:6]]) + "\n\n(Set OPENAI_API_KEY to enable a synthesized answer.)"
+            ans = "Top matching comments:\n" + "\n".join([f"- {d}" for d in docs[:6]]) + "\n\n(Set OPENAI_API_KEY in secrets to enable a synthesized answer.)"
 
         hits = []
         for m, s in zip(metas, scores):
@@ -606,17 +608,17 @@ Comments:
                 "author_title": m.get("author_title"),
                 "comment_url": m.get("comment_url"),
                 "replies": m.get("replies"),
-                "score": float(s),  # cosine similarity if ST; tfidf cosine if fallback
+                "score": float(s),  # similarity score (0..1 if ST; cosine if TF-IDF)
             })
         return {"answer": ans, "hits": hits}
 
-    # --- Filters from sidebar ALWAYS applied here ---
+    # ---------- Apply current sidebar filters (date → UTC ms) ----------
     import pytz
     tz = pytz.timezone("Asia/Riyadh")
     start_ts = int(tz.localize(pd.to_datetime(start).to_pydatetime()).astimezone(pytz.utc).timestamp()*1000)
     end_ts   = int(tz.localize(pd.to_datetime(end).to_pydatetime()).astimezone(pytz.utc).timestamp()*1000)
 
-    # --- Minimal UI
+    # ---------- Minimal UI ----------
     q = st.text_input("Ask a question", placeholder="e.g., What curriculum modules did people request?")
     if q:
         persona_filter = sel_personas_codes if len(sel_personas_codes)>0 else None
