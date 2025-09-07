@@ -431,12 +431,14 @@ with tab2:
         # Option 1 (preferred when HTML needs JS): iframe
         components.html(fixed, height=1400, scrolling=True, width=1600)  # width will match the Streamlit column
         #st.html(fixed, width="stretch")
+
 with tab3:
     st.subheader("Q&A")
 
     # --- Config / paths
     from pathlib import Path
     DATASET_JSON = Path("dataset.json")
+    COLLECTION_NAME = "linkedin_comments"
 
     # --- Helper: load dataset.json and merge persona/super_theme from df (if available)
     import json, re
@@ -491,98 +493,143 @@ with tab3:
 
     data_for_index = _load_dataset_json(DATASET_JSON)
 
-    # --- Embedding backend (SentenceTransformers) with TF-IDF fallback
-    @st.cache_resource(show_spinner=False)
-    def _load_st_model():
+    # --- Chroma (new client API; Ephemeral – no SQLite, no persistence) ---
+    try:
+        from chromadb import EphemeralClient
+        from chromadb.utils import embedding_functions
+    except Exception as e:
+        st.error(f"ChromaDB import failed: {type(e).__name__}: {e}")
+        st.stop()
+
+    # Choose embedding backend
+    embed_fn = None
+    try:
+        embed_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
+            model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+        )
+    except Exception:
         try:
-            from sentence_transformers import SentenceTransformer
-            model = SentenceTransformer("sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
-            return model
-        except Exception as e:
-            return None
+            import os
+            from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
+            assert os.getenv("OPENAI_API_KEY"), "Set OPENAI_API_KEY or install sentence-transformers."
+            embed_fn = OpenAIEmbeddingFunction(model_name="text-embedding-3-small", api_key=os.environ["OPENAI_API_KEY"])
+        except Exception as ee:
+            st.error(f"No embedding backend available: {type(ee).__name__}: {ee}")
+            st.stop()
 
-    st_model = _load_st_model()
+    # New, non-deprecated client (in-memory)
+    try:
+        rag_client = EphemeralClient()
+    except Exception as e:
+        st.error(f"Chroma client init failed: {type(e).__name__}: {e}")
+        st.stop()
 
-    @st.cache_resource(show_spinner=False)
-    def _build_embeddings(texts: list[str], have_model: bool):
-        import numpy as np
-        if have_model and st_model is not None:
-            # SentenceTransformers embeddings (normalized for cosine via dot product)
-            embs = st_model.encode(texts, batch_size=64, show_progress_bar=False, normalize_embeddings=True)
-            return "st", np.asarray(embs, dtype="float32"), None
-        else:
-            # TF-IDF fallback
-            from sklearn.feature_extraction.text import TfidfVectorizer
-            vec = TfidfVectorizer(ngram_range=(1,2), min_df=1, stop_words="english")
-            X = vec.fit_transform(texts)
-            return "tfidf", X, vec
+    # Prepare / get collection with embedding function
+    try:
+        coll = rag_client.get_or_create_collection(
+            name=COLLECTION_NAME,
+            embedding_function=embed_fn,
+            metadata={"hnsw:space": "cosine"},
+        )
+    except TypeError:
+        # Some builds don’t accept embedding_function here; create then pass embeddings on add/query.
+        coll = rag_client.get_or_create_collection(name=COLLECTION_NAME, metadata={"hnsw:space":"cosine"})
 
-    method, DOC_EMB, TFIDF_VEC = _build_embeddings(data_for_index["text"].tolist(), have_model=(st_model is not None))
+    # --- Build / refresh index (ephemeral → rebuild each run) ---
+    docs = data_for_index["text"].tolist()
+    ids  = data_for_index["id"].astype(str).tolist()
+    metas = []
+    for _, r in data_for_index.iterrows():
+        metas.append({
+            "id": str(r["id"]),
+            "author": r.get("author") or "",
+            "author_title": r.get("author_title") or "",
+            "comment_url": r.get("comment_url") or "",
+            "post_id": r.get("post_id") or "",
+            "created_ts": int(r.get("created_ts") or 0),
+            "super_theme": r.get("super_theme") or "unknown",
+            "persona": r.get("persona") or "unknown",
+            "sentiment": float(r.get("sentiment") or 0.0),
+            "replies": int(r.get("replies") or 0),
+        })
+
+    try:
+        if coll.count() != len(ids):
+            try:
+                coll.delete(ids=ids)
+            except Exception:
+                pass
+            coll.add(documents=docs, metadatas=metas, ids=ids)
+    except Exception:
+        # If count() not supported or fails, just (re)add
+        try:
+            coll.delete(ids=ids)
+        except Exception:
+            pass
+        coll.add(documents=docs, metadatas=metas, ids=ids)
+
+    # --- Filters from sidebar ALWAYS applied here ---
+    import pytz
+    tz = pytz.timezone("Asia/Riyadh")
+    start_ts = int(tz.localize(pd.to_datetime(start).to_pydatetime()).astimezone(pytz.utc).timestamp()*1000)
+    end_ts   = int(tz.localize(pd.to_datetime(end).to_pydatetime()).astimezone(pytz.utc).timestamp()*1000)
+
+    def _build_where(persona=None, super_theme=None, start_ts=None, end_ts=None):
+        # new parser prefers a single top-level op
+        clauses = []
+        if persona:     clauses.append({"persona": {"$in": list(persona)}})
+        if super_theme: clauses.append({"super_theme": {"$in": list(super_theme)}})
+        if start_ts is not None: clauses.append({"created_ts": {"$gte": int(start_ts)}})
+        if end_ts   is not None: clauses.append({"created_ts": {"$lte": int(end_ts)}})
+        if not clauses:   return None
+        if len(clauses)==1: return clauses[0]
+        return {"$and": clauses}
 
     # Optional LLM synthesis
     import os
-    # # st.secrets["OPENAI_API_KEY"]
-    # USE_LLM = bool(os.getenv("OPENAI_API_KEY"))
-    # OAICLIENT = None
-    # if USE_LLM:
-    #     try:
-    #         from openai import OpenAI
-    #         OAICLIENT = OpenAI()
-    #     except Exception:
-    #         USE_LLM = False
+    USE_LLM = bool(os.getenv("OPENAI_API_KEY"))
+    OAICLIENT = None
+    if USE_LLM:
+        try:
+            from openai import OpenAI
+            OAICLIENT = OpenAI()
+        except Exception:
+            USE_LLM = False
 
-    from openai import OpenAI
-    OPENAI_KEY = st.secrets.get("OPENAI_API_KEY", "")
-    USE_LLM = bool(OPENAI_KEY)
-    OAICLIENT = OpenAI(api_key=OPENAI_KEY) if USE_LLM else None
-
-
-    # --- Query helper
-    import numpy as np
-    from sklearn.metrics.pairwise import cosine_similarity
-
-    def _mask_indices(persona=None, super_theme=None, start_ts=None, end_ts=None):
-        m = pd.Series([True]*len(data_for_index))
-        if persona:
-            m &= data_for_index["persona"].isin(list(persona))
-        if super_theme:
-            m &= data_for_index["super_theme"].isin(list(super_theme))
-        if start_ts is not None:
-            m &= (data_for_index["created_ts"].fillna(0) >= int(start_ts))
-        if end_ts is not None:
-            m &= (data_for_index["created_ts"].fillna(0) <= int(end_ts))
-        idx = np.where(m.to_numpy())[0]
-        return idx
-
+    # Robust ask()
     def ask(question, k=10, persona=None, super_theme=None, start_ts=None, end_ts=None):
-        idx = _mask_indices(persona, super_theme, start_ts, end_ts)
-        if idx.size == 0:
+        where = _build_where(persona, super_theme, start_ts, end_ts)
+        try:
+            res = coll.query(
+                query_texts=[question],
+                n_results=k,
+                where=where,
+                include=["documents","metadatas","distances"],
+            )
+        except ValueError:
+            res = coll.query(
+                query_texts=[question],
+                n_results=k,
+                where=where,
+                include=["documents","metadatas"],
+            )
+
+        docs  = (res.get("documents") or [[]])[0]
+        metas = (res.get("metadatas") or [[]])[0]
+        dists = (res.get("distances") or [[]])[0]
+        if not docs:
             return {"answer":"No relevant comments found.", "hits":[]}
 
-        # Compute similarities
-        if method == "st":
-            q = st_model.encode([question], normalize_embeddings=True)
-            sims = (DOC_EMB[idx] @ q[0]).astype("float32")  # cosine via dot product
-        else:
-            q = TFIDF_VEC.transform([question])
-            sims = cosine_similarity(q, DOC_EMB[idx]).ravel()
-
-        order = sims.argsort()[::-1][:k]
-        hit_idx = idx[order]
-        docs = [data_for_index["text"].iat[i] for i in hit_idx]
-        metas = data_for_index.iloc[hit_idx][["author","author_title","comment_url","replies"]].to_dict("records")
-        scores = sims[order]
-
-        # Build grounded context
+        # Grounded context
         lines = []
         for t, m in zip(docs, metas):
+            m = m or {}
             who  = m.get("author") or "Anonymous"
             role = m.get("author_title") or ""
             link = m.get("comment_url") or ""
             lines.append(f"- {t}\n  (by {who}{', '+role if role else ''}) {link}")
         ctx = "\n".join(lines)
 
-        # Synthesis or extractive
         if USE_LLM and OAICLIENT is not None:
             prompt = f"""Answer the question using ONLY the comments below.
 Cite by pasting the comment URLs in parentheses after claims.
@@ -606,23 +653,18 @@ Comments:
             ans = "Top matching comments:\n" + "\n".join([f"- {d}" for d in docs[:6]]) + "\n\n(Set OPENAI_API_KEY to enable a synthesized answer.)"
 
         hits = []
-        for m, s in zip(metas, scores):
+        for i, m in enumerate(metas):
+            m = m or {}
             hits.append({
                 "author": m.get("author"),
                 "author_title": m.get("author_title"),
                 "comment_url": m.get("comment_url"),
                 "replies": m.get("replies"),
-                "score": float(s),  # cosine similarity if ST; tfidf cosine if fallback
+                "distance": float(dists[i]) if i < len(dists) else None,
             })
         return {"answer": ans, "hits": hits}
 
-    # --- Filters from sidebar ALWAYS applied here ---
-    import pytz
-    tz = pytz.timezone("Asia/Riyadh")
-    start_ts = int(tz.localize(pd.to_datetime(start).to_pydatetime()).astimezone(pytz.utc).timestamp()*1000)
-    end_ts   = int(tz.localize(pd.to_datetime(end).to_pydatetime()).astimezone(pytz.utc).timestamp()*1000)
-
-    # --- Minimal UI
+    # --- Minimal UI (always uses sidebar filters; no k slider, no rebuild, no captions) ---
     q = st.text_input("Ask a question", placeholder="e.g., What curriculum modules did people request?")
     if q:
         persona_filter = sel_personas_codes if len(sel_personas_codes)>0 else None
@@ -641,8 +683,8 @@ Comments:
                     meta = f"{h.get('author') or 'Anonymous'}"
                     if h.get("author_title"):
                         meta += f" — {h['author_title']}"
-                    if h.get("score") is not None:
-                        meta += f"  •  match: {float(h['score']):.2f}"
+                    if h.get("distance") is not None:
+                        meta += f"  •  match: {1.0 - float(h['distance']):.2f}"
                     st.caption(meta)
                     if h.get("comment_url"):
                         st.write(f"[Open comment]({h['comment_url']})")
