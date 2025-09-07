@@ -1,3 +1,5 @@
 plotly
 scikit-learn
 beautifulsoup4
+chromadb
+sentence-transformers
