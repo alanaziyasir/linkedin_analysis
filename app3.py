@@ -521,15 +521,21 @@ with tab3:
 
     # Optional LLM synthesis
     import os
-    # st.secrets["OPENAI_API_KEY"]
-    USE_LLM = bool(os.getenv("OPENAI_API_KEY"))
-    OAICLIENT = None
-    if USE_LLM:
-        try:
-            from openai import OpenAI
-            OAICLIENT = OpenAI()
-        except Exception:
-            USE_LLM = False
+    # # st.secrets["OPENAI_API_KEY"]
+    # USE_LLM = bool(os.getenv("OPENAI_API_KEY"))
+    # OAICLIENT = None
+    # if USE_LLM:
+    #     try:
+    #         from openai import OpenAI
+    #         OAICLIENT = OpenAI()
+    #     except Exception:
+    #         USE_LLM = False
+
+    from openai import OpenAI
+    OPENAI_KEY = st.secrets.get("OPENAI_API_KEY", "")
+    USE_LLM = bool(OPENAI_KEY)
+    OAICLIENT = OpenAI(api_key=OPENAI_KEY) if USE_LLM else None
+
 
     # --- Query helper
     import numpy as np
