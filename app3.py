@@ -521,6 +521,7 @@ with tab3:
 
     # Optional LLM synthesis
     import os
+    # st.secrets["OPENAI_API_KEY"]
     USE_LLM = bool(os.getenv("OPENAI_API_KEY"))
     OAICLIENT = None
     if USE_LLM:
