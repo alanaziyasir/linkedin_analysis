@@ -440,7 +440,7 @@ with tab3:
 
     # ---------- OpenAI key via Streamlit Secrets (docs-correct) ----------
     import os
-    OPENAI_KEY = st.secrets.get("OPENAI_API_KEY", "")
+    OPENAI_KEY = st.secrets["OPENAI_API_KEY"]
     USE_LLM = False
     OAICLIENT = None
     LLM_STATUS = "disabled"
