@@ -431,18 +431,36 @@ with tab2:
         # Option 1 (preferred when HTML needs JS): iframe
         components.html(fixed, height=1400, scrolling=True, width=1600)  # width will match the Streamlit column
         #st.html(fixed, width="stretch")
-
 with tab3:
-    st.subheader("Q&A")
+    st.subheader("Q&A (LLM)")
 
     # ---------- Config / paths ----------
     from pathlib import Path
     DATASET_JSON = Path("dataset.json")
 
-    # ---------- OpenAI key via Streamlit secrets (docs-correct) ----------
+    # ---------- OpenAI key via Streamlit Secrets (docs-correct) ----------
     import os
     OPENAI_KEY = st.secrets.get("OPENAI_API_KEY", "")
-    # You can pass it directly to the client; no need to export to env.
+    USE_LLM = False
+    OAICLIENT = None
+    LLM_STATUS = "disabled"
+    LLM_REASON = ""
+
+    if OPENAI_KEY:
+        try:
+            from openai import OpenAI  # requires `openai>=1.0.0` in requirements.txt
+            OAICLIENT = OpenAI(api_key=OPENAI_KEY)
+            USE_LLM = True
+            LLM_STATUS = "enabled"
+        except ImportError:
+            LLM_REASON = "The `openai` package is not installed. Add `openai>=1.0.0` to requirements.txt and redeploy."
+        except Exception as e:
+            LLM_REASON = f"{type(e).__name__}: {e}"
+    else:
+        LLM_REASON = "Secret `OPENAI_API_KEY` not found. Add it in Streamlit Cloud → Settings → Secrets."
+
+    if not USE_LLM:
+        st.caption(f"LLM status: {LLM_STATUS} — {LLM_REASON}")
 
     # ---------- Load + tidy dataset ----------
     import json, re, pandas as pd, numpy as np
@@ -486,7 +504,7 @@ with tab3:
 
         d0["replies"] = pd.to_numeric(d0.get("replies"), errors="coerce").fillna(0).astype(int)
 
-        # Bring over LLM labels from your main df if present
+        # Bring over LLM labels from the main df if present
         dmerge = df[["id","super_theme","persona","sentiment"]].copy()
         dmerge["id"] = dmerge["id"].astype(str)
         d0["id"] = d0["id"].astype(str)
@@ -515,7 +533,7 @@ with tab3:
             embs = st_model.encode(texts, batch_size=64, show_progress_bar=False, normalize_embeddings=True)
             return "st", np.asarray(embs, dtype="float32"), None
         else:
-            # TF-IDF fallback (works everywhere, no downloads)
+            # TF-IDF fallback
             from sklearn.feature_extraction.text import TfidfVectorizer
             vec = TfidfVectorizer(ngram_range=(1,2), min_df=1, stop_words="english")
             X = vec.fit_transform(texts)
@@ -524,16 +542,6 @@ with tab3:
     method, DOC_EMB, TFIDF_VEC = _build_embeddings(
         data_for_index["text"].tolist(), use_st=(st_model is not None)
     )
-
-    # ---------- Optional LLM synthesis ----------
-    USE_LLM = bool(OPENAI_KEY)
-    OAICLIENT = None
-    if USE_LLM:
-        try:
-            from openai import OpenAI
-            OAICLIENT = OpenAI(api_key=OPENAI_KEY)
-        except Exception:
-            USE_LLM = False
 
     # ---------- Query helpers ----------
     from sklearn.metrics.pairwise import cosine_similarity
@@ -596,10 +604,12 @@ Comments:
                     temperature=0.1,
                 )
                 ans = resp.choices[0].message.content.strip()
-            except Exception:
+            except Exception as e:
+                st.warning(f"LLM call failed: {type(e).__name__}: {e}")
                 ans = "Top matching comments:\n" + "\n".join([f"- {d}" for d in docs[:6]])
         else:
-            ans = "Top matching comments:\n" + "\n".join([f"- {d}" for d in docs[:6]]) + "\n\n(Set OPENAI_API_KEY in secrets to enable a synthesized answer.)"
+            ans = ("Top matching comments:\n" + "\n".join([f"- {d}" for d in docs[:6]]) +
+                   "\n\n(LLM synthesis is disabled. See the LLM status message above to enable it.)")
 
         hits = []
         for m, s in zip(metas, scores):
