@@ -433,18 +433,16 @@ with tab2:
         #st.html(fixed, width="stretch")
 
 
-
-
 with tab3:
     st.subheader("Q&A")
 
     # --- Config / paths
+    from pathlib import Path
     DATASET_JSON = Path("dataset.json")
-    INDEX_DIR = "rag_index"
     COLLECTION_NAME = "linkedin_comments"
 
     # --- Helper: load dataset.json and merge persona/super_theme from df (if available)
-    import json, re, time
+    import json, re
     def _load_dataset_json(path: Path) -> pd.DataFrame:
         if not path.exists():
             st.error(f"Missing {path}. Place dataset.json in the app folder.")
@@ -469,7 +467,7 @@ with tab3:
         present = [k for k in keep if k in d0.columns]
         d0 = d0[present].rename(columns=keep)
 
-        def clean(s): 
+        def clean(s):
             if not isinstance(s,str): return ""
             return re.sub(r"\s+"," ", s.replace("\u200b","")).strip()
         d0["text"] = d0["text"].map(clean)
@@ -496,40 +494,54 @@ with tab3:
 
     data_for_index = _load_dataset_json(DATASET_JSON)
 
-    # --- Chroma setup (lazy import to avoid slowing other tabs)
+    # --- Chroma (DuckDB backend, in-memory; avoids SQLite entirely) ---
     try:
         import chromadb
+        from chromadb.config import Settings
         from chromadb.utils import embedding_functions
-    except Exception:
-        st.error("ChromaDB is not installed. Run:  \n`pip install chromadb`")
+    except Exception as e:
+        st.error(f"ChromaDB import failed: {type(e).__name__}: {e}")
         st.stop()
 
-    # choose embedding backend
+    # Choose embedding backend
+    embed_fn = None
     try:
         embed_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
             model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
         )
     except Exception:
         try:
-            from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
             import os
+            from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
             assert os.getenv("OPENAI_API_KEY"), "Set OPENAI_API_KEY or install sentence-transformers."
             embed_fn = OpenAIEmbeddingFunction(model_name="text-embedding-3-small", api_key=os.environ["OPENAI_API_KEY"])
-        except Exception:
-            st.error("No embedding backend available. Install `sentence-transformers` or set OPENAI_API_KEY.")
+        except Exception as ee:
+            st.error(f"No embedding backend available: {type(ee).__name__}: {ee}")
             st.stop()
 
-    # Persistent client
+    # DuckDB+Parquet (ephemeral) client — no SQLite, no persistence
     try:
-        rag_client = chromadb.PersistentClient(path=INDEX_DIR)
-    except Exception:
-        rag_client = chromadb.Client()
+        rag_client = chromadb.Client(
+            Settings(
+                chroma_db_impl="duckdb+parquet",
+                persist_directory=None,           # keep it purely in-memory for Streamlit Cloud
+                anonymized_telemetry=False,
+            )
+        )
+    except Exception as e:
+        st.error(f"Chroma client init failed: {type(e).__name__}: {e}")
+        st.stop()
 
-    # Prepare / get collection
+    # Prepare / get collection with embedding function
     try:
-        coll = rag_client.get_or_create_collection(COLLECTION_NAME, metadata={"hnsw:space": "cosine"}, embedding_function=embed_fn)
+        coll = rag_client.get_or_create_collection(
+            COLLECTION_NAME,
+            metadata={"hnsw:space": "cosine"},
+            embedding_function=embed_fn,
+        )
     except TypeError:
-        coll = rag_client.get_or_create_collection(COLLECTION_NAME, embedding_function=embed_fn)
+        # Some builds don't accept embedding_function here; create then set later (or pass embeddings on add/query)
+        coll = rag_client.get_or_create_collection(COLLECTION_NAME, metadata={"hnsw:space":"cosine"})
 
     # --- Build / refresh index silently if needed ---
     docs = data_for_index["text"].tolist()
@@ -548,6 +560,7 @@ with tab3:
             "sentiment": float(r.get("sentiment") or 0.0),
             "replies": int(r.get("replies") or 0),
         })
+
     need_index = True
     try:
         need_index = (coll.count() != len(ids))
@@ -558,6 +571,7 @@ with tab3:
             coll.delete(ids=ids)
         except Exception:
             pass
+        # If the collection did not accept an embedding_function, you can pass embeddings explicitly here
         coll.add(documents=docs, metadatas=metas, ids=ids)
 
     # --- Filters from sidebar ALWAYS applied here ---
@@ -567,7 +581,7 @@ with tab3:
     end_ts   = int(tz.localize(pd.to_datetime(end).to_pydatetime()).astimezone(pytz.utc).timestamp()*1000)
 
     def _build_where(persona=None, super_theme=None, start_ts=None, end_ts=None):
-        # Strict Chroma parsers want a single top-level operator
+        # Strict parsers want a single top-level operator
         clauses = []
         if persona:     clauses.append({"persona": {"$in": list(persona)}})
         if super_theme: clauses.append({"super_theme": {"$in": list(super_theme)}})
@@ -592,9 +606,19 @@ with tab3:
     def ask(question, k=10, persona=None, super_theme=None, start_ts=None, end_ts=None):
         where = _build_where(persona, super_theme, start_ts, end_ts)
         try:
-            res = coll.query(query_texts=[question], n_results=k, where=where, include=["documents","metadatas","distances"])
+            res = coll.query(
+                query_texts=[question],
+                n_results=k,
+                where=where,
+                include=["documents","metadatas","distances"],
+            )
         except ValueError:
-            res = coll.query(query_texts=[question], n_results=k, where=where, include=["documents","metadatas"])
+            res = coll.query(
+                query_texts=[question],
+                n_results=k,
+                where=where,
+                include=["documents","metadatas"],
+            )
 
         docs  = (res.get("documents") or [[]])[0]
         metas = (res.get("metadatas") or [[]])[0]
@@ -602,14 +626,15 @@ with tab3:
         if not docs:
             return {"answer":"No relevant comments found.", "hits":[]}
 
-        ctx_lines = []
+        # Grounded context
+        lines = []
         for t, m in zip(docs, metas):
             m = m or {}
             who  = m.get("author") or "Anonymous"
             role = m.get("author_title") or ""
             link = m.get("comment_url") or ""
-            ctx_lines.append(f"- {t}\n  (by {who}{', '+role if role else ''}) {link}")
-        ctx = "\n".join(ctx_lines)
+            lines.append(f"- {t}\n  (by {who}{', '+role if role else ''}) {link}")
+        ctx = "\n".join(lines)
 
         if USE_LLM and OAICLIENT is not None:
             prompt = f"""Answer the question using ONLY the comments below.
@@ -645,10 +670,9 @@ Comments:
             })
         return {"answer": ans, "hits": hits}
 
-    # --- Minimal UI (no k slider, no rebuild, no embeddings caption, no limit checkbox) ---
+    # --- Minimal UI (always uses sidebar filters; no k slider, no rebuild, no captions) ---
     q = st.text_input("Ask a question", placeholder="e.g., What curriculum modules did people request?")
     if q:
-        # Always apply current sidebar filters
         persona_filter = sel_personas_codes if len(sel_personas_codes)>0 else None
         theme_filter   = sel_themes_codes   if len(sel_themes_codes)>0   else None
         res = ask(q, k=10, persona=persona_filter, super_theme=theme_filter, start_ts=start_ts, end_ts=end_ts)
@@ -671,4 +695,3 @@ Comments:
                     if h.get("comment_url"):
                         st.write(f"[Open comment]({h['comment_url']})")
                     hr()
-

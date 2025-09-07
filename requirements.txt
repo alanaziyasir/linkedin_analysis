@@ -1,5 +1,6 @@
 plotly
 scikit-learn
 beautifulsoup4
-chromadb
 sentence-transformers
+duckdb>=1.0
+chromadb==1.0.20
