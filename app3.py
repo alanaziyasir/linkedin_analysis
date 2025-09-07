@@ -432,7 +432,6 @@ with tab2:
         components.html(fixed, height=1400, scrolling=True, width=1600)  # width will match the Streamlit column
         #st.html(fixed, width="stretch")
 
-
 with tab3:
     st.subheader("Q&A")
 
@@ -494,10 +493,9 @@ with tab3:
 
     data_for_index = _load_dataset_json(DATASET_JSON)
 
-    # --- Chroma (DuckDB backend, in-memory; avoids SQLite entirely) ---
+    # --- Chroma (new client API; Ephemeral – no SQLite, no persistence) ---
     try:
-        import chromadb
-        from chromadb.config import Settings
+        from chromadb import EphemeralClient
         from chromadb.utils import embedding_functions
     except Exception as e:
         st.error(f"ChromaDB import failed: {type(e).__name__}: {e}")
@@ -519,15 +517,9 @@ with tab3:
             st.error(f"No embedding backend available: {type(ee).__name__}: {ee}")
             st.stop()
 
-    # DuckDB+Parquet (ephemeral) client — no SQLite, no persistence
+    # New, non-deprecated client (in-memory)
     try:
-        rag_client = chromadb.Client(
-            Settings(
-                chroma_db_impl="duckdb+parquet",
-                persist_directory=None,           # keep it purely in-memory for Streamlit Cloud
-                anonymized_telemetry=False,
-            )
-        )
+        rag_client = EphemeralClient()
     except Exception as e:
         st.error(f"Chroma client init failed: {type(e).__name__}: {e}")
         st.stop()
@@ -535,15 +527,15 @@ with tab3:
     # Prepare / get collection with embedding function
     try:
         coll = rag_client.get_or_create_collection(
-            COLLECTION_NAME,
-            metadata={"hnsw:space": "cosine"},
+            name=COLLECTION_NAME,
             embedding_function=embed_fn,
+            metadata={"hnsw:space": "cosine"},
         )
     except TypeError:
-        # Some builds don't accept embedding_function here; create then set later (or pass embeddings on add/query)
-        coll = rag_client.get_or_create_collection(COLLECTION_NAME, metadata={"hnsw:space":"cosine"})
+        # Some builds don’t accept embedding_function here; create then pass embeddings on add/query.
+        coll = rag_client.get_or_create_collection(name=COLLECTION_NAME, metadata={"hnsw:space":"cosine"})
 
-    # --- Build / refresh index silently if needed ---
+    # --- Build / refresh index (ephemeral → rebuild each run) ---
     docs = data_for_index["text"].tolist()
     ids  = data_for_index["id"].astype(str).tolist()
     metas = []
@@ -561,17 +553,19 @@ with tab3:
             "replies": int(r.get("replies") or 0),
         })
 
-    need_index = True
     try:
-        need_index = (coll.count() != len(ids))
+        if coll.count() != len(ids):
+            try:
+                coll.delete(ids=ids)
+            except Exception:
+                pass
+            coll.add(documents=docs, metadatas=metas, ids=ids)
     except Exception:
-        pass
-    if need_index:
+        # If count() not supported or fails, just (re)add
         try:
             coll.delete(ids=ids)
         except Exception:
             pass
-        # If the collection did not accept an embedding_function, you can pass embeddings explicitly here
         coll.add(documents=docs, metadatas=metas, ids=ids)
 
     # --- Filters from sidebar ALWAYS applied here ---
@@ -581,7 +575,7 @@ with tab3:
     end_ts   = int(tz.localize(pd.to_datetime(end).to_pydatetime()).astimezone(pytz.utc).timestamp()*1000)
 
     def _build_where(persona=None, super_theme=None, start_ts=None, end_ts=None):
-        # Strict parsers want a single top-level operator
+        # new parser prefers a single top-level op
         clauses = []
         if persona:     clauses.append({"persona": {"$in": list(persona)}})
         if super_theme: clauses.append({"super_theme": {"$in": list(super_theme)}})
