@@ -440,11 +440,25 @@ with tab3:
 
     # ---------- OpenAI key via Streamlit Secrets (docs-correct) ----------
     import os
-    OPENAI_KEY = st.secrets["OPENAI_API_KEY"]
-    USE_LLM = False
-    OAICLIENT = None
-    LLM_STATUS = "disabled"
-    LLM_REASON = ""
+    import streamlit as st
+
+    OPENAI_KEY = st.secrets.get("OPENAI_API_KEY", "").strip()
+    OPENAI_PROJECT = st.secrets.get("OPENAI_PROJECT", "").strip()
+
+    from openai import OpenAI
+    OAICLIENT = OpenAI(api_key=OPENAI_KEY, project=OPENAI_PROJECT or None)
+
+    # (Optional) quick status so you can see it’s wired:
+    st.caption(f"LLM: {'enabled' if OPENAI_KEY else 'disabled'} • Project: {OPENAI_PROJECT or '—'}")
+
+
+
+
+    # OPENAI_KEY = st.secrets["OPENAI_API_KEY"]
+    # USE_LLM = False
+    # OAICLIENT = None
+    # LLM_STATUS = "disabled"
+    # LLM_REASON = ""
 
     if OPENAI_KEY:
         try:
