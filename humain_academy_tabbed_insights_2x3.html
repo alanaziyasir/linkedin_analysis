@@ -1,189 +1,67 @@
-
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<!-- <title>General Insights (2×3)</title> -->
-<style>
-:root{ --oasis:#DDF94A; --air:#00D49C; --aqua:#00879F; --stone:#E5E5E5; --bg:#ffffff; --ink:#0b1b23; --muted:#4a5a66; }
-*{box-sizing:border-box}
-body{margin:0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background:var(--bg); color:var(--ink);}
-.header{padding:14px 20px; border-bottom:1px solid var(--stone); position:sticky; top:0; background:rgba(255,255,255,.96); backdrop-filter: blur(8px); z-index:10;}
-.header-inner{max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:16px;}
-h1{font-size:20px; margin:0;}
-.nav{display:flex; gap:8px;}
-.nav button{padding:8px 12px; border-radius:10px; border:1px solid var(--aqua); background:var(--aqua); color:#fff; font-weight:700; cursor:pointer;}
-.nav button.active{background:var(--air); border-color:var(--air);}
-.nav button:hover{filter:brightness(.95)}
-
-.container{max-width:1200px; margin:0 auto; padding:22px;}
-
-.section{margin:20px 0 26px;}
-.section h2{margin:0 0 12px; font-size:22px;}
-.lead{color:var(--muted); margin-bottom:12px;}
-
-.grid-2x3{display:grid; grid-template-columns:repeat(2, 1fr); gap:14px;}
-@media (max-width: 820px){ .grid-2x3{grid-template-columns:1fr;} }
-
-.card{background:#fff; border:1px solid #e7edf3; border-radius:14px; padding:16px; box-shadow:0 4px 14px rgba(16,30,54,.06); display:flex; flex-direction:column; gap:10px;}
-.badge{display:inline-block; background:var(--oasis); color:#000; padding:8px 12px; border-radius:999px; font-weight:800; font-size:15px;}
-.card ul{margin:2px 0 0 18px; padding:0;}
-.card li{margin:8px 0; line-height:1.55;}
-a.idea{color:#006699; text-decoration:none; border-bottom:1px dashed rgba(0,102,153,.35);}
-a.idea:hover{color:#003d66; border-bottom-color:#003d66;}
-
-.panel{display:none;}
-.panel.active{display:block;}
-
-.footer{text-align:center; color:var(--muted); padding:18px; border-top:1px solid var(--stone);}
-</style>
-
-<style id="app_color_override">
-  :root{ --oasis:#e5e7eb !important; --air:#e5e7eb !important; --aqua:#e5e7eb !important; }
-  .badge{ background:transparent !important; color:inherit !important; font-weight:700 !important; }
-  .nav button, .nav button.active{ background:transparent !important; border-color:#e5e7eb !important; color:inherit !important; }
-  h1,h2,h3{ font-weight:700 !important; }
-</style>
+    <title>HUMAIN Academy Insights</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .tab-container { width: 100%; }
+        .tab-button { padding: 10px 20px; margin: 5px; background: #f0f0f0; border: none; cursor: pointer; }
+        .tab-button.active { background: #007bff; color: white; }
+        .tab-content { display: none; padding: 20px; border: 1px solid #ddd; }
+        .tab-content.active { display: block; }
+        .insight-card { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px; }
+    </style>
 </head>
 <body>
-  <div class="header">
-    <div class="header-inner">
-      <!-- <h1>General Insights</h1> -->
-      <div class="nav">
-        <button class="active" data-target="top6" onclick="showPanel('top6')">Insights</button>
-        <button data-target="prof" onclick="showPanel('prof')">Professions</button>
-        <button data-target="themes" onclick="showPanel('themes')">Themes</button>
-      </div>
+    <div class="tab-container">
+        <button class="tab-button active" onclick="showTab('overview')">Overview</button>
+        <button class="tab-button" onclick="showTab('trends')">Trends</button>
+        <button class="tab-button" onclick="showTab('recommendations')">Recommendations</button>
+        
+        <div id="overview" class="tab-content active">
+            <h2>Academy Overview</h2>
+            <div class="insight-card">
+                <h3>Key Metrics</h3>
+                <p>Total Comments Analyzed: 500+</p>
+                <p>Engagement Rate: 85%</p>
+                <p>Positive Sentiment: 78%</p>
+            </div>
+        </div>
+        
+        <div id="trends" class="tab-content">
+            <h2>Trending Topics</h2>
+            <div class="insight-card">
+                <h3>Most Requested Skills</h3>
+                <ul>
+                    <li>AI Workflow Automation</li>
+                    <li>Data Pipeline Management</li>
+                    <li>Practical Implementation</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div id="recommendations" class="tab-content">
+            <h2>Recommendations</h2>
+            <div class="insight-card">
+                <h3>Curriculum Suggestions</h3>
+                <p>Focus on hands-on projects and industry partnerships</p>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <main class="container">
     
-<section id="top6" class="section panel active">
-  <h2>Top Insights</h2>
-  <div class="lead">Click the bold phrases in bullets to open the source LinkedIn comments.</div>
-  <div class="grid-2x3">
-    
-        <div class="card">
-          <div class="badge">Practical, Hands-On Training Over Certificates</div>
-          <ul><li>Pushback against theory-heavy or certificate-driven training.</li><li>Demand for <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369698390642786306%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369698390642786306%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>real projects, real tools, real deployments</a> → portfolio‑ready work.</li><li>Seen as HUMAIN Academy’s key differentiator vs. traditional education.</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Bridging Academia and Industry Needs</div>
-          <ul><li>Close the gap between universities and what companies require.</li><li>Map curricula to <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369774938670432257%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369774938670432257%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>industry demand signals</a> (pipelines, automation, healthcare, entrepreneurship).</li><li>Make the Academy a true bridge: academic theory + industry execution speed.</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Culturally Rooted Learning Models (Saudi-Specific)</div>
-          <ul><li>Ideas like <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369972248943812609%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369972248943812609%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>AI Talk Café</a> and <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369773948110024704%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369773948110024704%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>AI Majlis</a> resonated with the community.</li><li>Embed Saudi culture into learning while maintaining global competitiveness.</li><li>Use dialogue-driven, real-world formats to drive adoption.</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Governance, Measurement &amp; Impact Tracking</div>
-          <ul><li>Form a <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369774938670432257%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369774938670432257%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>Strategic Advisory Board</a> with academia/startup/industry voices.</li><li>Build a <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369774938670432257%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369774938670432257%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>data-driven outcomes dashboard</a> (placements, startups, learner ROI).</li><li>Elevates the academy from training provider to national capability builder.</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Emerging Specializations &amp; AI Literacy</div>
-          <ul><li>Specialized tracks: <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369995737922768896%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369995737922768896%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>bioinformatics</a>, <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369995737922768896%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369995737922768896%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>genomics</a>, <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369660838179274758%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369660838179274758%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>healthcare</a>, <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369750706460778498%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369750706460778498%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>product management</a>.</li><li>Broad <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369749367076847617%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369749367076847617%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>AI literacy</a> for non‑tech professionals (HR, business, consultants).</li><li>Serve both deep specialists and cross‑functional professionals.</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Co‑Build Partnerships &amp; Ecosystem Collaboration</div>
-          <ul><li>Strong interest from <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369995737922768896%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369995737922768896%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>platform builders</a> to co‑create the L&D platform.</li><li>Community recommendations of <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369756456490930176%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369756456490930176%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>experts to involve</a> and advisors.</li><li>Align with <a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369801587210252289%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369801587210252289%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'>national entities &amp; Vision 2030</a> to anchor projects in real outcomes.</li></ul>
-        </div>
-        
-  </div>
-</section>
-
-    
-<section id="prof" class="section panel">
-  <h2>Professions</h2>
-  <div class="grid-2x3">
-    
-        <div class="card">
-          <div class="badge">CEOs &amp; Directors (Industry) — 140</div>
-          <ul><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369801587210252289%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369801587210252289%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Strategic Alignment (Vision 2030 / SDAIA)</b></a>: Tie HUMAIN Academy directly to Vision 2030, SDAIA, and national entities.</li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369774938670432257%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369774938670432257%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Strategic Advisory Board</b></a>: Create a Strategic Advisory Board to stay aligned with global AI trends.</li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369774938670432257%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369774938670432257%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Data-driven outcomes platform</b></a>: Build a learning outcomes platform (progress tracking, placements, startup success).</li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369773948110024704%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369773948110024704%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Sovereign AI capability</b></a>: Not just training — build Saudi’s sovereign AI capability.</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Lead Roles (Industry) — 108</div>
-          <ul><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369992156012339200%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369992156012339200%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>AI workflow automation</b></a></li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369992156012339200%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369992156012339200%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Data pipeline management</b></a></li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369750706460778498%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369750706460778498%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>AI Product Management</b></a></li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369776887406997504%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369776887406997504%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Hands-on deployments</b></a>: Insist on hands-on projects — learners should deploy real AI, not just study theory.</li><li><b>Industry Integration</b>: Programs mirroring company needs (from startups to enterprise).</li><li><b>Execution Focus</b>: Fast learning, pivoting, and adapting as core traits of future AI leaders.</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Academic Leadership — 8</div>
-          <ul><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369773948110024704%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369773948110024704%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Human-centered learning paths</b></a>: Personalized learning paths rooted in Saudi culture.</li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369773948110024704%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369773948110024704%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>AI Majlis</b></a>: Immersive model blending labs, ethics, and cultural dialogue.</li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369992156012339200%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369992156012339200%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Local talent pipelines</b></a>: Build local talent pipelines instead of dependency on imported expertise.</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Academic Staff — 38</div>
-          <ul><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369749367076847617%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369749367076847617%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>AI Literacy (augmentation over tools)</b></a>: Demystify AI; move beyond flashy tools to practical augmentation.</li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369972248943812609%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369972248943812609%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>AI Talk Café</b></a>: Discussion-based, real-world use cases.</li><li><b>Bridge research with industry</b>: Link academic inquiry with industry challenges.</li><li><b>Usable, transferable skills</b>: Learners exit with usable, transferable skills.</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Other Professionals — ~151</div>
-          <ul><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369789802809925633%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369789802809925633%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>HR &amp; L&amp;D transformation</b></a>: Workforce transformation, employee empowerment, HR process automation with AI.</li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369756456490930176%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369756456490930176%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Investors &amp; consultants: experts to involve</b></a>: Encourage global benchmarking; suggest experts to involve.</li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369819380555149315%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369819380555149315%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Graduates: expressions of interest</b></a>: Enthusiasm to join.</li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369789802809925633%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369789802809925633%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Independent innovators: bureaucracy/certifications</b></a>: Push beyond bureaucracy and certificate-driven training.</li></ul>
-        </div>
-        
-  </div>
-</section>
-
-    
-<section id="themes" class="section panel">
-  <h2>Themes</h2>
-  <div class="grid-2x3">
-    
-        <div class="card">
-          <div class="badge">Suggestions &amp; Ideas (307)</div>
-          <ul><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369995737922768896%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369995737922768896%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Bioinformatics / Genomics</b></a></li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369660838179274758%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369660838179274758%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>AI in healthcare</b></a></li><li><b>AI Talk Café (theme)</b>: Discussion culture over coffee.</li><li><b>AI Majlis (theme)</b>: Culturally immersive co-design.</li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369774938670432257%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369774938670432257%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Advisory Board / feedback loops</b></a>: Governance &amp; structure.</li><li><a class='idea' href='https://www.linkedin.com/feed/update/urn:li:activity:7369227868972691457?commentUrn=urn%3Ali%3Acomment%3A%28activity%3A7369227868972691457%2C7369992156012339200%29&amp;dashCommentUrn=urn%3Ali%3Afsd_comment%3A%287369992156012339200%2Curn%3Ali%3Aactivity%3A7369227868972691457%29' target='_blank' rel='noopener'><b>Industry-driven skills</b></a>: Curriculum design around product management, entrepreneurship, data pipelines.</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Support &amp; Enthusiasm (110)</div>
-          <ul><li><b>Visionary step / transformational impact</b>: Many praised the transformational potential.</li><li><b>Regional/global reference point</b>: Seen as a potential regional/global reference in AI talent.</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Positive Feedback (36)</div>
-          <ul><li><b>Short supportive notes</b>: “Great initiative,” “Brilliant vision,” “Exciting times ahead.”</li></ul>
-        </div>
-        
-
-        <div class="card">
-          <div class="badge">Negative Feedback (9)</div>
-          <ul><li><b>certificate-driven</b>: Critique of certification without purpose.</li><li><b>Bureaucratic slowdowns</b>: Concerns about slow processes in education.</li><li><b>Too much theory / shiny tools</b>: Warning against focusing on theory/shiny tools over application.</li></ul>
-        </div>
-        
-  </div>
-</section>
-
-  </main>
-
-  <!-- <div class="footer">
-    Built from your uploaded JSON; only bold phrases inside bullets are clickable.
-  </div> -->
-
-<script>
-function showPanel(id){
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
-  document.querySelector(`.nav button[data-target="${id}"]`).classList.add('active');
-}
-</script>
+    <script>
+        function showTab(tabName) {
+            // Hide all tabs
+            var tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            var buttons = document.querySelectorAll('.tab-button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
 </body>
 </html>

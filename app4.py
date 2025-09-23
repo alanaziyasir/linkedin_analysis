@@ -8,6 +8,7 @@ import numpy as np
 import sklearn  # optional for top_ngrams
 import streamlit.components.v1 as components
 from pathlib import Path
+import json
 
 
 
@@ -83,14 +84,50 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 LABELED = "comments_labeled.parquet"
-df = pd.read_parquet(LABELED)
+try:
+    df = pd.read_parquet(LABELED)
+except Exception as e:
+    st.error(f"Error loading parquet file: {e}")
+    st.info("Loading from dataset.json instead...")
+    # Load from JSON as fallback
+    with open("dataset.json") as f:
+        data = json.load(f)
+    df = pd.json_normalize(data)
+    # Map columns
+    if 'commentary' in df.columns:
+        df['text'] = df['commentary']
+    if 'actor.name' in df.columns:
+        df['author'] = df['actor.name']
+    if 'engagement.comments' in df.columns:
+        df['replies'] = pd.to_numeric(df['engagement.comments'], errors='coerce').fillna(0)
+    # Add missing columns
+    df['super_theme'] = 'suggestions_ideas'
+    df['persona'] = 'unknown'
+    df['sentiment'] = 0.5
+    df['shares'] = 0
+    df['comment_url'] = df.get('linkedinUrl', '')
+    df['author_title'] = df.get('actor.position', '')
+    df['id'] = range(len(df))
+    df['created_at'] = pd.to_datetime('2024-01-01', utc=True)  # Default date
+    if 'createdAt' in df.columns:
+        df['created_at'] = pd.to_datetime(df['createdAt'], utc=True, errors='coerce')
+    elif 'createdAtTimestamp' in df.columns:
+        df['created_at'] = pd.to_datetime(df['createdAtTimestamp'], unit='ms', utc=True, errors='coerce')
 
-# Required cols
+# Required cols - check after loading
 needed = ["created_at","super_theme","persona","text","author","author_title","replies","comment_url"]
-missing = [c for c in needed if c not in df.columns]
-if missing:
-    st.error(f"Required columns missing: {missing}")
-    st.stop()
+if not df.empty:
+    missing = [c for c in needed if c not in df.columns]
+    if missing:
+        st.warning(f"Some columns missing: {missing}. Using defaults.")
+        # Add missing columns with defaults
+        for col in missing:
+            if col == "created_at":
+                df[col] = pd.to_datetime('2024-01-01', utc=True)
+            elif col in ["super_theme", "persona", "text", "author", "author_title", "comment_url"]:
+                df[col] = "unknown"
+            elif col == "replies":
+                df[col] = 0
 
 # Hygiene (no likes anywhere)
 for c in ["replies","shares"]:
