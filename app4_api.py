@@ -24,7 +24,6 @@ DATASET_JSON = Path("dataset.json")
 
 # Initialize dataframes
 df = pd.DataFrame()
-dataset_df = pd.DataFrame()
 
 try:
     # Try parquet first, but handle corruption
@@ -54,34 +53,48 @@ try:
         if 'actor.position' in df.columns:
             df['author_title'] = df['actor.position']
         
-        # Classify themes and personas using app4.py logic
+        # Enhanced classification logic
         def classify_theme(text):
             if not isinstance(text, str):
                 return 'positive_feedback'
             text_lower = text.lower()
-            if any(word in text_lower for word in ['suggest', 'should', 'could', 'idea', 'recommend']):
+            
+            suggestion_words = ['suggest', 'should', 'could', 'would', 'idea', 'recommend', 'propose', 'add', 'include', 'consider', 'curriculum', 'training', 'course', 'program', 'module', 'focus on', 'teach']
+            if any(word in text_lower for word in suggestion_words):
                 return 'suggestions_ideas'
-            elif any(word in text_lower for word in ['support', 'help', 'agree', 'yes', 'absolutely']):
+            
+            support_words = ['great', 'excellent', 'amazing', 'fantastic', 'brilliant', 'excited', 'support', 'help', 'agree', 'yes', 'absolutely', 'love', 'perfect', 'good', 'best', 'awesome']
+            if any(word in text_lower for word in support_words):
                 return 'support_enthusiasm'
-            elif any(word in text_lower for word in ['bad', 'wrong', 'terrible', 'hate', 'no']):
+            
+            negative_words = ['bad', 'wrong', 'terrible', 'hate', 'no', 'not', 'never', 'difficult', 'problem', 'issue', 'concern', 'fail', 'poor']
+            if any(word in text_lower for word in negative_words):
                 return 'negative_feedback'
-            else:
-                return 'positive_feedback'
+            
+            return 'positive_feedback'
         
         def classify_persona(title):
             if not isinstance(title, str):
                 return 'unknown'
             title_lower = title.lower()
-            if any(word in title_lower for word in ['ceo', 'director', 'president', 'founder']):
+            
+            exec_words = ['ceo', 'chief executive', 'president', 'founder', 'co-founder', 'director', 'managing director', 'executive director', 'chairman']
+            if any(word in title_lower for word in exec_words):
                 return 'industry_exec'
-            elif any(word in title_lower for word in ['lead', 'manager', 'head']):
+            
+            lead_words = ['lead', 'leader', 'manager', 'head', 'senior', 'principal', 'vice president', 'vp', 'supervisor', 'coordinator', 'specialist']
+            if any(word in title_lower for word in lead_words):
                 return 'industry_lead'
-            elif any(word in title_lower for word in ['professor', 'dean', 'chancellor']):
+            
+            academic_lead_words = ['professor', 'prof', 'dean', 'chancellor', 'provost', 'chair', 'department head', 'academic director']
+            if any(word in title_lower for word in academic_lead_words):
                 return 'academic_leadership'
-            elif any(word in title_lower for word in ['teacher', 'instructor', 'lecturer']):
+            
+            academic_staff_words = ['teacher', 'instructor', 'lecturer', 'assistant professor', 'associate professor', 'researcher', 'phd', 'dr.']
+            if any(word in title_lower for word in academic_staff_words):
                 return 'academic_staff'
-            else:
-                return 'unknown'
+            
+            return 'unknown'
         
         # Apply classifications
         df['super_theme'] = df['text'].apply(classify_theme)
@@ -135,81 +148,10 @@ class UploadRequest(BaseModel):
 def root():
     return {"message": "LinkedIn Analysis API - App4 Integration", "status": "running"}
 
-def analyze_with_app4_logic(upload_df):
-    """Apply app4.py's analysis logic to uploaded data"""
-    
-    # Map columns like app4.py does
-    if 'commentary' in upload_df.columns:
-        upload_df['text'] = upload_df['commentary']
-    if 'actor.name' in upload_df.columns:
-        upload_df['author'] = upload_df['actor.name']
-    if 'engagement.comments' in upload_df.columns:
-        upload_df['replies'] = pd.to_numeric(upload_df['engagement.comments'], errors='coerce').fillna(0)
-    if 'actor.position' in upload_df.columns:
-        upload_df['author_title'] = upload_df['actor.position']
-    
-    # Add required columns with defaults
-    for col in ['text', 'author', 'author_title', 'replies']:
-        if col not in upload_df.columns:
-            upload_df[col] = '' if col in ['text', 'author', 'author_title'] else 0
-    
-    # Use pre-labeled data if available, otherwise classify
-    if not df.empty and len(df) > 0:
-        # Use existing labeled data as reference
-        sample_size = min(len(upload_df), len(df))
-        reference_data = df.head(sample_size).copy()
-        
-        # Apply the same distribution to uploaded data
-        upload_df['super_theme'] = np.random.choice(
-            reference_data['super_theme'].values, 
-            size=len(upload_df), 
-            replace=True
-        )
-        upload_df['persona'] = np.random.choice(
-            reference_data['persona'].values, 
-            size=len(upload_df), 
-            replace=True
-        )
-    else:
-        # Fallback classification logic
-        def classify_theme(text):
-            if not isinstance(text, str):
-                return 'positive_feedback'
-            text_lower = text.lower()
-            if any(word in text_lower for word in ['suggest', 'should', 'could', 'idea', 'recommend']):
-                return 'suggestions_ideas'
-            elif any(word in text_lower for word in ['support', 'help', 'agree', 'yes', 'absolutely']):
-                return 'support_enthusiasm'
-            elif any(word in text_lower for word in ['bad', 'wrong', 'terrible', 'hate', 'no']):
-                return 'negative_feedback'
-            else:
-                return 'positive_feedback'
-        
-        def classify_persona(title):
-            if not isinstance(title, str):
-                return 'unknown'
-            title_lower = title.lower()
-            if any(word in title_lower for word in ['ceo', 'director', 'president', 'founder']):
-                return 'industry_exec'
-            elif any(word in title_lower for word in ['lead', 'manager', 'head']):
-                return 'industry_lead'
-            elif any(word in title_lower for word in ['professor', 'dean', 'chancellor']):
-                return 'academic_leadership'
-            elif any(word in title_lower for word in ['teacher', 'instructor', 'lecturer']):
-                return 'academic_staff'
-            else:
-                return 'unknown'
-        
-        upload_df['super_theme'] = upload_df['text'].apply(classify_theme)
-        upload_df['persona'] = upload_df['author_title'].apply(classify_persona)
-    
-    return upload_df
-
 @app.post("/analyze-upload")
 def analyze_uploaded_data(request: UploadRequest):
-    """Analyze uploaded JSON data using app4.py's real analysis logic"""
+    """Analyze uploaded JSON data using app4.py's classification logic"""
     try:
-        # Process the uploaded data
         data = request.data
         if isinstance(data, dict) and 'data' in data:
             data = data['data']
@@ -219,85 +161,111 @@ def analyze_uploaded_data(request: UploadRequest):
         
         # Convert to DataFrame and analyze
         upload_df = pd.json_normalize(data)
-        analyzed_df = analyze_with_app4_logic(upload_df)
         
-        # Generate real counts from analyzed data
-        theme_counts = analyzed_df['super_theme'].value_counts().to_dict()
-        persona_counts = analyzed_df['persona'].value_counts().to_dict()
+        # Map columns like app4.py does
+        if 'commentary' in upload_df.columns:
+            upload_df['text'] = upload_df['commentary']
+        if 'actor.name' in upload_df.columns:
+            upload_df['author'] = upload_df['actor.name']
+        if 'engagement.comments' in upload_df.columns:
+            upload_df['replies'] = pd.to_numeric(upload_df['engagement.comments'], errors='coerce').fillna(0)
+        if 'actor.position' in upload_df.columns:
+            upload_df['author_title'] = upload_df['actor.position']
         
-        # Create cross-tabulation like app4.py
-        crosstab = pd.crosstab(analyzed_df['persona'], analyzed_df['super_theme'])
+        # Add required columns with defaults
+        for col in ['text', 'author', 'author_title', 'replies']:
+            if col not in upload_df.columns:
+                upload_df[col] = '' if col in ['text', 'author', 'author_title'] else 0
         
-        # Build treemap data using real analysis results
+        # Enhanced classification logic
+        def classify_theme(text):
+            if not isinstance(text, str):
+                return 'positive_feedback'
+            text_lower = text.lower()
+            
+            suggestion_words = ['suggest', 'should', 'could', 'would', 'idea', 'recommend', 'propose', 'add', 'include', 'consider', 'curriculum', 'training', 'course', 'program', 'module', 'focus on', 'teach']
+            if any(word in text_lower for word in suggestion_words):
+                return 'suggestions_ideas'
+            
+            support_words = ['great', 'excellent', 'amazing', 'fantastic', 'brilliant', 'excited', 'support', 'help', 'agree', 'yes', 'absolutely', 'love', 'perfect', 'good', 'best', 'awesome']
+            if any(word in text_lower for word in support_words):
+                return 'support_enthusiasm'
+            
+            negative_words = ['bad', 'wrong', 'terrible', 'hate', 'no', 'not', 'never', 'difficult', 'problem', 'issue', 'concern', 'fail', 'poor']
+            if any(word in text_lower for word in negative_words):
+                return 'negative_feedback'
+            
+            return 'positive_feedback'
+        
+        def classify_persona(title):
+            if not isinstance(title, str):
+                return 'unknown'
+            title_lower = title.lower()
+            
+            exec_words = ['ceo', 'chief executive', 'president', 'founder', 'co-founder', 'director', 'managing director', 'executive director', 'chairman']
+            if any(word in title_lower for word in exec_words):
+                return 'industry_exec'
+            
+            lead_words = ['lead', 'leader', 'manager', 'head', 'senior', 'principal', 'vice president', 'vp', 'supervisor', 'coordinator', 'specialist']
+            if any(word in title_lower for word in lead_words):
+                return 'industry_lead'
+            
+            academic_lead_words = ['professor', 'prof', 'dean', 'chancellor', 'provost', 'chair', 'department head', 'academic director']
+            if any(word in title_lower for word in academic_lead_words):
+                return 'academic_leadership'
+            
+            academic_staff_words = ['teacher', 'instructor', 'lecturer', 'assistant professor', 'associate professor', 'researcher', 'phd', 'dr.']
+            if any(word in title_lower for word in academic_staff_words):
+                return 'academic_staff'
+            
+            return 'unknown'
+        
+        upload_df['super_theme'] = upload_df['text'].apply(classify_theme)
+        upload_df['persona'] = upload_df['author_title'].apply(classify_persona)
+        
+        # Generate counts
+        theme_counts = upload_df['super_theme'].value_counts().to_dict()
+        persona_counts = upload_df['persona'].value_counts().to_dict()
+        
+        # Create treemap data
         treemap_data = {}
+        for theme_code, theme_label in SUPER_THEME_LABELS.items():
+            if theme_code in theme_counts:
+                theme_comments = upload_df[upload_df['super_theme'] == theme_code]
+                persona_breakdown = theme_comments['persona'].value_counts().to_dict()
+                
+                breakdown_display = {}
+                for persona_code, count in persona_breakdown.items():
+                    persona_label = PERSONA_LABELS.get(persona_code, persona_code)
+                    breakdown_display[persona_label] = count
+                
+                treemap_data[theme_label.lower().replace(' ', '_')] = {
+                    'total': theme_counts[theme_code],
+                    'breakdown': breakdown_display
+                }
         
-        # Map themes to frontend labels
-        theme_mapping = {
-            'positive_feedback': 'complementary',
-            'suggestions_ideas': 'suggestions', 
-            'negative_feedback': 'negatives',
-            'support_enthusiasm': 'neutral'  # Map support to neutral for frontend
-        }
+        # Create radar chart data
+        theme_radar = {}
+        for code, label in SUPER_THEME_LABELS.items():
+            count = theme_counts.get(code, 0)
+            normalized = min(10, (count / max(theme_counts.values()) * 10) if theme_counts else 0)
+            theme_radar[label.split(' ')[0]] = round(normalized, 1)
         
-        persona_mapping = {
-            'industry_exec': 'CEOs',
-            'industry_lead': 'Industry Leaders',
-            'academic_leadership': 'Academic Leaders',
-            'academic_staff': 'Academic Staff',
-            'unknown': 'Others'
-        }
-        
-        # Build treemap structure from real data
-        for theme_code, count in theme_counts.items():
-            theme_key = theme_mapping.get(theme_code, 'neutral')
-            
-            # Get persona breakdown for this theme
-            theme_data = analyzed_df[analyzed_df['super_theme'] == theme_code]
-            persona_breakdown = theme_data['persona'].value_counts().to_dict()
-            
-            # Convert to frontend format
-            breakdown = {}
-            for persona_code, persona_count in persona_breakdown.items():
-                persona_label = persona_mapping.get(persona_code, 'Others')
-                breakdown[persona_label] = int(persona_count)
-            
-            treemap_data[theme_key] = {
-                'total': int(count),
-                'breakdown': breakdown
-            }
-        
-        # Generate radar chart data from real analysis
-        theme_radar = {
-            'Support': int(theme_counts.get('support_enthusiasm', 0)),
-            'Ideas': int(theme_counts.get('suggestions_ideas', 0)),
-            'Complements': int(theme_counts.get('positive_feedback', 0)),
-            'Theme': int(sum(theme_counts.values()) / 4),  # Average
-            'Negative': int(theme_counts.get('negative_feedback', 0))
-        }
-        
-        profession_radar = {
-            'CEO': int(persona_counts.get('industry_exec', 0)),
-            'Director': int(persona_counts.get('industry_lead', 0)),
-            'Academic Leadership': int(persona_counts.get('academic_leadership', 0)),
-            'Others': int(persona_counts.get('unknown', 0)),
-            'Lead': int(persona_counts.get('industry_lead', 0)),
-            'Academic Staff': int(persona_counts.get('academic_staff', 0))
-        }
+        profession_radar = {}
+        for code, label in PERSONA_LABELS.items():
+            count = persona_counts.get(code, 0)
+            normalized = min(10, (count / max(persona_counts.values()) * 10) if persona_counts else 0)
+            profession_radar[label.split(' ')[0]] = round(normalized, 1)
         
         return {
             "status": "success",
-            "filename": request.filename,
-            "total_comments": len(analyzed_df),
-            "unique_authors": analyzed_df['author'].nunique() if 'author' in analyzed_df.columns else 0,
+            "message": f"Successfully analyzed {len(upload_df)} comments",
+            "total_comments": len(upload_df),
             "treemap_data": treemap_data,
             "theme_radar": theme_radar,
             "profession_radar": profession_radar,
-            "raw_analysis": {
-                "theme_counts": theme_counts,
-                "persona_counts": persona_counts,
-                "crosstab": crosstab.to_dict()
-            },
-            "source": "app4.py real analysis"
+            "filename": request.filename,
+            "source": "app4.py classification logic"
         }
         
     except Exception as e:
@@ -305,93 +273,54 @@ def analyze_uploaded_data(request: UploadRequest):
 
 @app.get("/app4-analysis")
 def get_app4_analysis():
-    """Get the actual analysis results from app4.py's labeled data"""
+    """Get analysis using the real app4.py data and classification logic"""
     try:
         if df.empty:
-            return {"error": "No labeled data available", "data_loaded": False}
+            raise HTTPException(status_code=404, detail="No data available. Load dataset.json first.")
         
-        # Generate real analysis from app4.py data
+        # Use the loaded and classified data from app4.py logic
         theme_counts = df['super_theme'].value_counts().to_dict()
         persona_counts = df['persona'].value_counts().to_dict()
-        crosstab = pd.crosstab(df['persona'], df['super_theme'])
         
-        # Build treemap data from real app4.py analysis
-        theme_mapping = {
-            'positive_feedback': 'complementary',
-            'suggestions_ideas': 'suggestions', 
-            'negative_feedback': 'negatives',
-            'support_enthusiasm': 'neutral'
-        }
-        
-        persona_mapping = {
-            'industry_exec': 'CEOs',
-            'industry_lead': 'Industry Leaders', 
-            'academic_leadership': 'Academic Leaders',
-            'academic_staff': 'Academic Staff',
-            'unknown': 'Others'
-        }
-        
+        # Create treemap data structure
         treemap_data = {}
-        for theme_code, count in theme_counts.items():
-            theme_key = theme_mapping.get(theme_code, 'neutral')
-            theme_data = df[df['super_theme'] == theme_code]
-            persona_breakdown = theme_data['persona'].value_counts().to_dict()
-            
-            breakdown = {}
-            for persona_code, persona_count in persona_breakdown.items():
-                persona_label = persona_mapping.get(persona_code, 'Others')
-                breakdown[persona_label] = int(persona_count)
-            
-            treemap_data[theme_key] = {
-                'total': int(count),
-                'breakdown': breakdown
-            }
+        for theme_code, theme_label in SUPER_THEME_LABELS.items():
+            if theme_code in theme_counts:
+                theme_comments = df[df['super_theme'] == theme_code]
+                persona_breakdown = theme_comments['persona'].value_counts().to_dict()
+                
+                breakdown_display = {}
+                for persona_code, count in persona_breakdown.items():
+                    persona_label = PERSONA_LABELS.get(persona_code, persona_code)
+                    breakdown_display[persona_label] = count
+                
+                treemap_data[theme_label.lower().replace(' ', '_')] = {
+                    'total': theme_counts[theme_code],
+                    'breakdown': breakdown_display
+                }
         
-        # Real radar data
-        theme_radar = {
-            'Support': int(theme_counts.get('support_enthusiasm', 0)),
-            'Ideas': int(theme_counts.get('suggestions_ideas', 0)), 
-            'Complements': int(theme_counts.get('positive_feedback', 0)),
-            'Theme': int(sum(theme_counts.values()) / 4),
-            'Negative': int(theme_counts.get('negative_feedback', 0))
-        }
+        # Create radar chart data
+        theme_radar = {}
+        for code, label in SUPER_THEME_LABELS.items():
+            count = theme_counts.get(code, 0)
+            normalized = min(10, (count / max(theme_counts.values()) * 10) if theme_counts else 0)
+            theme_radar[label.split(' ')[0]] = round(normalized, 1)
         
-        profession_radar = {
-            'CEO': int(persona_counts.get('industry_exec', 0)),
-            'Director': int(persona_counts.get('industry_lead', 0)),
-            'Academic Leadership': int(persona_counts.get('academic_leadership', 0)),
-            'Others': int(persona_counts.get('unknown', 0)),
-            'Lead': int(persona_counts.get('industry_lead', 0)),
-            'Academic Staff': int(persona_counts.get('academic_staff', 0))
-        }
+        profession_radar = {}
+        for code, label in PERSONA_LABELS.items():
+            count = persona_counts.get(code, 0)
+            normalized = min(10, (count / max(persona_counts.values()) * 10) if persona_counts else 0)
+            profession_radar[label.split(' ')[0]] = round(normalized, 1)
         
         return {
             "status": "success",
+            "message": f"Real app4.py analysis with {len(df)} comments",
             "total_comments": len(df),
-            "unique_authors": df['author'].nunique(),
             "treemap_data": treemap_data,
             "theme_radar": theme_radar,
             "profession_radar": profession_radar,
-            "raw_counts": {
-                "themes": theme_counts,
-                "personas": persona_counts
-            },
-            "source": "app4.py labeled data"
+            "source": "app4.py real data"
         }
         
     except Exception as e:
-        return {"error": f"Analysis failed: {str(e)}"}
-
-@app.get("/health")
-def health_check():
-    return {
-        "status": "healthy",
-        "data_loaded": not df.empty,
-        "dataset_loaded": not dataset_df.empty,
-        "comments_count": len(df) if not df.empty else 0,
-        "source": "app4.py"
-    }
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+        raise HTTPException(status_code=500, detail=f"Failed to get app4 analysis: {str(e)}")
